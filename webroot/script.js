@@ -27,19 +27,12 @@ async function exec(command) {
         return null; // Unknown type
     } catch (e) {
         console.error("KSU exec error", e);
-        // logDebug(`Exec Error: ${e.message}`);
-        // Fallback for browser testing
-        if (window.location.hostname === 'localhost' || window.location.protocol === 'file:') {
-            if (command === 'uname -r') return '5.10.247-Floppy-v6.2-RKS-g4184e67c28bf-dirty';
-            if (command.startsWith('cat ')) return 'a25x';
-        }
         return null;
     }
 }
 
-function logDebug(msg) {
-    // Debug disabled
-}
+
+
 
 const VARIANTS = {
     'V': 'Vanilla',
@@ -260,10 +253,9 @@ async function init() {
     }
 }
 
-// On Load
-if (typeof ksu !== 'undefined' || window.location.hostname === 'localhost' || window.location.protocol === 'file:') {
+// Initialize
+if (typeof ksu !== 'undefined') {
     init();
 } else {
-    // Wait for KSU to inject? usually it's there at load time for webview
     window.addEventListener('load', init);
 }
