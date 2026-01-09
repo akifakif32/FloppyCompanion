@@ -203,6 +203,19 @@ async function init() {
         });
     }
 
+    // External Link Handling
+    const ghLink = document.getElementById('github-link');
+    if (ghLink) {
+        ghLink.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const url = ghLink.dataset.url;
+            if (url) {
+                await exec(`am start -a android.intent.action.VIEW -d "${url}"`);
+            }
+        });
+    }
+
     // 2. Check Kernel Version (uname -r)
     // Format: 5.10.247-Floppy-v6.2-RKS-g4184e67c28bf-dirty
     const uname = await exec('uname -r');
