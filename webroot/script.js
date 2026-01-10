@@ -236,24 +236,8 @@ async function init() {
     // --- Platform specific features ---
 
     // AOSP Mode (Floppy1280 Only)
-    if (is1280) {
-        const rowAosp = document.getElementById('row-aosp-mode');
-        const valAosp = document.getElementById('val-aosp-mode');
-
-        if (rowAosp && valAosp) {
-            try {
-                const cmdline = await exec('cat /proc/cmdline');
-                if (cmdline) {
-                    // Check for aosp_mode=1
-                    const isAosp = cmdline.includes('aosp_mode=1');
-                    valAosp.textContent = isAosp ? 'Yes' : 'No';
-                    rowAosp.classList.remove('hidden');
-                }
-            } catch (err) {
-                console.error('Failed to check AOSP Mode', err);
-            }
-        }
-    }
+    // Deprecated distinct logic was here: Now handled by generic card renderer via "info" type or "toggle" type if editable.
+    // If the card is in JSON, it renders there.
 
     // Setup Exit Button
     const exitBtn = document.getElementById('exit-btn');
@@ -493,9 +477,18 @@ async function init() {
             }
 
             const el = document.createElement('div');
-            el.className = 'feature-item';
+            el.className = 'feature-card';
 
-            const currentVal = currentFeatures[item.key] || '0'; // default
+            const currentVal = currentFeatures[item.key] || '0';
+
+            // Int Toggle Logic: ON if currentVal is not '0' (disabled)
+            const isOn = currentVal !== '0';
+
+            // Default Value Logic for toggle ON
+            let defaultVal = '1';
+            if (item.type === 'select' && item.options && item.options.length > 0) {
+                defaultVal = item.options[0].val;
+            }
 
             let liveVal = null;
             if (procCmdline && item.key) {
@@ -511,72 +504,116 @@ async function init() {
                 </div>`;
             }
 
-            let controlsHtml = '';
+            // --- Switch Construction ---
+            // If info type, no switch.
+            let headerControl = '';
+
+            if (item.type !== 'info') {
+                headerControl = `
+                    <label class="m3-switch" style="display:inline-block; margin:0;">
+                        <input type="checkbox" id="switch-${item.key}" ${isOn ? 'checked' : ''} 
+                            onchange="updateFeature('${item.key}', this.checked ? '${defaultVal}' : '0', this)">
+                        <span class="m3-switch-track">
+                             <span class="m3-switch-thumb"></span>
+                        </span>
+                    </label>
+                `;
+            }
+
+            let bodyControls = '';
+
             if (item.type === 'select') {
+                // Add "Disabled" option
+                const optionsWithDisabled = [
+                    { val: '0', label: 'Disabled', desc: '', experimental: false },
+                    ...item.options
+                ];
+
                 // Filter options based on experimental flag
-                const visibleOptions = item.options.filter(opt =>
-                    showExperimental || !opt.experimental
-                );
-                controlsHtml = visibleOptions.map(opt => {
+                const visibleOptions = optionsWithDisabled.filter(opt => showExperimental || !opt.experimental);
+                const chipsHtml = visibleOptions.map(opt => {
                     const expBadge = opt.experimental ? '<span class="experimental-badge">Exp</span>' : '';
                     return `
                     <button class="chip-btn ${opt.val === currentVal ? 'selected' : ''}" 
+                        data-val="${opt.val}"
                         onclick="updateFeature('${item.key}', '${opt.val}', this)"
                         title="${opt.desc || ''}">
                         ${opt.label}${expBadge}
                     </button>
-                `}).join('');
-            } else if (item.type === 'toggle') {
-                const isOn = currentVal === '1';
-                const expBadge = item.experimental ? '<span class="experimental-badge">Exp</span>' : '';
-                controlsHtml = `
-                    <button class="chip-btn ${isOn ? 'selected' : ''}" 
-                        onclick="updateFeature('${item.key}', '${isOn ? '0' : '1'}', this)">
-                        ${isOn ? 'Enabled' : 'Disabled'}${expBadge}
-                    </button>
-                `;
-            } else {
-                controlsHtml = `<span class="text-sm text-dim">ReadOnly: ${item.desc}</span>`;
-            }
+                    `;
+                }).join('');
 
-            // Show option description if current value has one
-            let optionDesc = '';
-            if (item.type === 'select' && item.options) {
-                const currentOpt = item.options.find(o => o.val === currentVal);
+                let optionDesc = '';
+                const currentOpt = optionsWithDisabled.find(o => o.val === currentVal);
                 if (currentOpt && currentOpt.desc) {
-                    optionDesc = `<div class="text-sm text-dim" style="margin-top:4px;">${currentOpt.desc}</div>`;
+                    optionDesc = `<div class="text-sm text-dim" style="margin-top:8px;">${currentOpt.desc}</div>`;
                 }
+
+                bodyControls = `<div class="feature-controls" id="ctrl-${item.key}" style="margin-top:12px;">${chipsHtml}</div>${optionDesc}`;
             }
 
+            // Current Value Display
+            let displayValText = currentVal;
+            if (currentVal === '0') {
+                displayValText += ' (Disabled)';
+            }
+            const currentValueHtml = `<div class="current-value-display">Current: ${displayValText}</div>`;
+
+            // Render
             el.innerHTML = `
                 <div class="feature-header">
-                    <span class="feature-title">${item.title}</span>
-                    <span class="feature-code">${item.key ? item.key + '=' + currentVal : ''}</span>
+                    <div class="feature-info">
+                        <h3 class="feature-title">${item.title}</h3>
+                        <div class="feature-key">${item.key || ''}</div>
+                        <div class="feature-desc">${item.desc || ''}</div>
+                    </div>
+                    <div class="feature-action">
+                        ${headerControl}
+                    </div>
                 </div>
-                ${item.type !== 'info' ? `<div class="text-sm text-dim">${item.desc || ''}</div>` : ''}
-                ${optionDesc}
+                ${bodyControls}
                 ${warningHtml}
-                <div class="feature-controls" id="ctrl-${item.key}">
-                    ${controlsHtml}
-                </div>
+                ${currentValueHtml}
             `;
+
             featuresContainer.appendChild(el);
         });
     }
 
     // Expose to window for inline onclick
-    window.updateFeature = (key, val, btn) => {
+    window.updateFeature = (key, val, target) => {
         pendingChanges[key] = val;
 
-        // Update UI Visuals immediately
-        const container = btn.parentElement;
-        // remove selected from all siblings
-        Array.from(container.children).forEach(c => c.classList.remove('selected'));
-        // add to clicked
-        btn.classList.add('selected');
-        // Update toggle text if toggle
-        if (btn.textContent.trim() === 'Enabled' || btn.textContent.trim() === 'Disabled') {
-            btn.textContent = val === '1' ? 'Enabled' : 'Disabled';
+        const switchInput = document.getElementById(`switch-${key}`);
+
+        if (target.type === 'checkbox') {
+            // Handle Switch Toggle
+            const controls = document.getElementById(`ctrl-${key}`);
+            if (controls) {
+                if (val === '0') {
+                    // Turned OFF: Select Disabled option (val 0)
+                    Array.from(controls.children).forEach(c => {
+                        if (c.dataset.val === '0') c.classList.add('selected');
+                        else c.classList.remove('selected');
+                    });
+                } else {
+                    // Turned ON: Select chip matching val
+                    Array.from(controls.children).forEach(c => {
+                        if (c.dataset.val === val) c.classList.add('selected');
+                        else c.classList.remove('selected');
+                    });
+                }
+            }
+        } else {
+            // Handle Chip Click
+            const container = target.parentElement;
+            Array.from(container.children).forEach(c => c.classList.remove('selected'));
+            target.classList.add('selected');
+
+            // Sync Switch
+            if (switchInput) {
+                switchInput.checked = (val !== '0');
+            }
         }
 
         fabApply.style.display = 'flex'; // Show Apply FAB

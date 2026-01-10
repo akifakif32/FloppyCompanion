@@ -14,6 +14,8 @@
     --md-sys-color-outline: #747775;
     --md-sys-shape-corner-large: 16px;
     --md-sys-shape-corner-medium: 12px;
+    --md-sys-color-surface-container: #f0f4ff;
+    /* Light bluish tint */
 }
 
 /* Theme: Orange (FloppyTrinketMi) */
@@ -24,6 +26,8 @@ body.theme-orange {
     --md-sys-color-on-primary-container: #351000;
     --md-sys-color-secondary-container: #ffdbcc;
     --md-sys-color-on-secondary-container: #351000;
+    --md-sys-color-surface-container: #fff8f5;
+    /* Light orange tint */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -38,18 +42,24 @@ body.theme-orange {
         --md-sys-color-on-secondary-container: #00287d;
         --md-sys-color-surface: #191c1a;
         --md-sys-color-on-surface: #e1e3e0;
+
         --md-sys-color-surface-variant: #444745;
         --md-sys-color-on-surface-variant: #c4c7c5;
         --md-sys-color-outline: #8e918f;
+        --md-sys-color-surface-container: #1b2029;
+        /* Dark bluish grey */
     }
 
     body.theme-orange {
         --md-sys-color-primary: #ffb68f;
         --md-sys-color-on-primary: #532200;
         --md-sys-color-primary-container: #763300;
+
         --md-sys-color-on-primary-container: #ffdbcc;
         --md-sys-color-secondary-container: #763300;
         --md-sys-color-on-secondary-container: #ffdbcc;
+        --md-sys-color-surface-container: #2b211d;
+        /* Dark brownish */
     }
 }
 
@@ -59,6 +69,57 @@ body.theme-orange {
     padding: 0;
 }
 
+
+/* Feature Cards */
+.feature-card {
+    background-color: var(--md-sys-color-surface-container);
+    border-radius: 24px;
+    padding: 20px;
+    margin-bottom: 12px;
+}
+
+.feature-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.feature-action {
+    flex-shrink: 0;
+}
+
+.feature-info {
+    flex: 1;
+}
+
+.feature-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--md-sys-color-on-surface);
+    margin-bottom: 2px;
+}
+
+.feature-key {
+    font-family: monospace;
+    font-size: 12px;
+    color: var(--md-sys-color-primary);
+    margin-bottom: 4px;
+}
+
+.feature-desc {
+    font-size: 14px;
+    color: var(--md-sys-color-on-surface-variant);
+    line-height: 1.4;
+}
+
+.current-value-display {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--md-sys-color-primary);
+    margin-top: 12px;
+}
 
 body {
     font-family: 'Roboto', sans-serif;
