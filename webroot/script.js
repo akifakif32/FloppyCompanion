@@ -750,7 +750,8 @@ async function init() {
         const switchContainer = document.querySelector('.experimental-switch-container');
         if (switchContainer) {
             // More padding when Apply button is visible (two FABs stacked)
-            switchContainer.style.marginBottom = hasApplyButton ? '140px' : '80px';
+            // 70px for two FABs, 0px for just Refresh FAB
+            switchContainer.style.marginBottom = hasApplyButton ? '70px' : '0px';
         }
     }
 

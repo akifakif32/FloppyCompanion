@@ -493,7 +493,7 @@ body {
 /* --- Experimental Toggle (M3 Switch) --- */
 .experimental-switch-container {
     margin-top: 16px;
-    margin-bottom: 80px;
+    margin-bottom: 0;
     padding: 16px;
     padding-right: 0;
     background: var(--md-sys-color-surface-container);
