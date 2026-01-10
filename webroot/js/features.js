@@ -126,6 +126,13 @@ async function loadFeatures() {
 
         renderFeatures(schema, procCmdline);
 
+        // Visibility check for Read-Only Patch Toggle
+        const readonlyContainer = document.getElementById('readonly-patch-container');
+        if (readonlyContainer) {
+            const hasInfoFeatures = schema.some(f => f.type === 'info');
+            readonlyContainer.style.display = hasInfoFeatures ? 'block' : 'none';
+        }
+
     } catch (e) {
         featuresContainer.innerHTML = `<div class="p-4 text-center">Error: ${e.message}</div>`;
     }
