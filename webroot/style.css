@@ -16,6 +16,10 @@
     --md-sys-shape-corner-medium: 12px;
     --md-sys-color-surface-container: #f0f4ff;
     /* Light bluish tint */
+    --md-sys-color-surface-container-high: #ffffff;
+    --terminal-bg: #eeeeee;
+    --terminal-text: #1b5e20;
+    /* Dark Green */
 }
 
 /* Theme: Orange (FloppyTrinketMi) */
@@ -48,6 +52,9 @@ body.theme-orange {
         --md-sys-color-outline: #8e918f;
         --md-sys-color-surface-container: #1b2029;
         /* Dark bluish grey */
+        --md-sys-color-surface-container-high: #2b2b2f;
+        --terminal-bg: #1e1e1e;
+        --terminal-text: #00e676;
     }
 
     body.theme-orange {
@@ -908,8 +915,8 @@ body {
 
 
 .terminal {
-    background: #1e1e1e;
-    color: #00e676;
+    background: var(--terminal-bg);
+    color: var(--terminal-text);
     font-family: monospace;
     font-size: 12px;
     padding: 12px;
