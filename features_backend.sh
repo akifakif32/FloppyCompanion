@@ -5,9 +5,11 @@ TOOLS="$MODDIR/tools"
 MAGISKBOOT="$TOOLS/magiskboot"
 WORK_DIR="/data/local/tmp/fc_work"
 BOOT_BLOCK="/dev/block/by-name/boot"
+LOG_FILE="$MODDIR/.patch_log"
 
 log() {
-    echo "[FC] $@"
+    echo "[FC] $*"
+    echo "[FC] $*" >> "$LOG_FILE"
 }
 
 cleanup() {

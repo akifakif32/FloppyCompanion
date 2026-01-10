@@ -862,6 +862,7 @@ body {
     overflow-y: auto;
     margin: 16px 0;
     white-space: pre-wrap;
+    text-align: left;
 }
 
 .btn {

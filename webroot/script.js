@@ -417,6 +417,40 @@ async function init() {
         terminalOutput.scrollTop = terminalOutput.scrollHeight;
     }
 
+    // Live log polling for backend operations
+    let logPollInterval = null;
+    const LOG_FILE = '/data/adb/modules/floppy_companion/.patch_log';
+
+    async function startLogPolling() {
+        let lastContent = '';
+        // Clear log file first
+        await exec(`echo "" > "${LOG_FILE}"`);
+
+        logPollInterval = setInterval(async () => {
+            try {
+                const content = await exec(`cat "${LOG_FILE}" 2>/dev/null || echo ""`);
+                if (content && content !== lastContent) {
+                    // Only show new lines
+                    const newLines = content.substring(lastContent.length);
+                    if (newLines.trim()) {
+                        terminalOutput.textContent += newLines;
+                        terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                    }
+                    lastContent = content;
+                }
+            } catch (e) {
+                // Ignore polling errors
+            }
+        }, 200); // Poll every 200ms
+    }
+
+    function stopLogPolling() {
+        if (logPollInterval) {
+            clearInterval(logPollInterval);
+            logPollInterval = null;
+        }
+    }
+
     function openModal() {
         modal.classList.remove('hidden');
         terminalOutput.textContent = '';
@@ -736,8 +770,19 @@ async function init() {
 
         try {
             logToModal("Applying patches: " + patches.join(", "));
+
+            // Start live log polling
+            await startLogPolling();
+
             const res = await runBackend('patch', ...patches);
-            logToModal(res);
+
+            // Stop polling
+            stopLogPolling();
+
+            // Show any remaining output
+            if (res && !terminalOutput.textContent.includes(res)) {
+                logToModal(res);
+            }
 
             if (res.includes("Success")) {
                 logToModal("\nPersisting changes...");
@@ -753,12 +798,11 @@ async function init() {
                             if (val === '0') {
                                 // Disabled: Remove from cache entirely
                                 pRes = await exec(`sh /data/adb/modules/floppy_companion/persistence.sh remove "${key}"`);
-                                logToModal(`Removed ${key}: ${pRes}`);
                             } else {
                                 // Enabled: Save to cache
                                 pRes = await exec(`sh /data/adb/modules/floppy_companion/persistence.sh save "${key}" "${val}" "${feature.type}"`);
-                                logToModal(`Saved ${key}: ${pRes}`);
                             }
+                            logToModal(pRes.trim());
                         } catch (pe) {
                             logToModal(`Failed to persist ${key}: ${pe.message}`);
                         }
