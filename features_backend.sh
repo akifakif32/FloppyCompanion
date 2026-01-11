@@ -69,7 +69,10 @@ case "$1" in
         ;;
         
     read_features)
-        # Needs unpack first
+        # Usage: read_features <mode>
+        # mode: header or kernel
+        MODE="$2"
+        
         cd "$WORK_DIR" || exit 1
         if [ ! -f "kernel" ]; then
             echo "Error: Kernel not found. Refresh to unpack."
@@ -78,17 +81,12 @@ case "$1" in
 
         echo "---FEATURES_START---"
         
-        # Strategy 1: Trinket (header-based cmdline)
-        if [ -f "header" ] && grep -q "cmdline=" header; then
-            # Extract cmdline content
-            # Format in header file is: cmdline=foo=1 bar=2 ...
+        if [ "$MODE" = "header" ]; then
+            # Trinket: header-based cmdline
             FULL_CMDLINE=$(grep "^cmdline=" header | cut -d= -f2-)
-            
-            # Output full cmdline; frontend features.js filters for relevant keys defined in features.json
             echo "$FULL_CMDLINE"
-            
         else
-            # Strategy 2: Floppy1280 (baked-in kernel cmdline)
+            # Floppy1280: baked-in kernel cmdline
             # Use cgroup.memory=nokmem as anchor
             strings kernel | grep "cgroup.memory=nokmem" | head -1
         fi
@@ -97,9 +95,11 @@ case "$1" in
         ;;
         
     patch)
-        # Usage: patch "key=val" "key2=val2" ...
-        # Example: patch "superfloppy=1" "force_perm=1"
-        shift
+        # Usage: patch <mode> "key=val" "key2=val2" ...
+        # mode: header or kernel
+        MODE="$2"
+        shift 2  # Remove 'patch' and mode from args
+        
         cd "$WORK_DIR" || exit 1
         
         if [ ! -f "kernel" ]; then
@@ -107,15 +107,7 @@ case "$1" in
             exit 1
         fi
         
-        log "Applying patches..."
-        
-        # Detect mode
-        MODE="unknown"
-        if [ -f "header" ] && grep -q "cmdline=" header; then
-            MODE="header"
-        elif strings kernel | grep -q "cgroup.memory=nokmem"; then
-            MODE="kernel"
-        fi
+        log "Applying patches (mode: $MODE)..."
         
         if [ "$MODE" = "header" ]; then
             # --- TRINKET / Header Mode ---

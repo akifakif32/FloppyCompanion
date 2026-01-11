@@ -6,6 +6,7 @@ let showExperimental = false; // Experimental features toggle
 let allowReadonlyPatch = false; // Allow patching read-only (info) features
 let currentSchema = null; // Current feature schema
 let currentProcCmdline = null; // Current /proc/cmdline
+let currentPatchMode = 'kernel'; // Current patch mode (kernel/header)
 let isTrinketMi = false; // State for schema selection (set during init)
 
 // --- Backend Communication ---
@@ -89,7 +90,15 @@ async function loadFeatures() {
         if (!response.ok) throw new Error("Failed to load features.json");
         const featureData = await response.json();
 
-        const schema = isTrinketMi ? featureData.features_trinket : featureData.features_1280;
+        // Get device family data
+        const familyKey = isTrinketMi ? 'trinket' : '1280';
+        const deviceFamily = featureData.device_families[familyKey];
+        if (!deviceFamily) {
+            throw new Error(`Unknown device family: ${familyKey}`);
+        }
+
+        const schema = deviceFamily.features;
+        currentPatchMode = deviceFamily.patch_mode || 'kernel';
 
         // Retrieve cmdline
         const procCmdline = await exec('cat /proc/cmdline');
@@ -102,8 +111,8 @@ async function loadFeatures() {
             return;
         }
 
-        // Read
-        const featureOutput = await runBackend('read_features');
+        // Read features (pass patch mode)
+        const featureOutput = await runBackend('read_features', currentPatchMode);
 
         const startMarker = '---FEATURES_START---';
         const endMarker = '---FEATURES_END---';
@@ -370,13 +379,14 @@ async function applyChanges() {
     const patches = Object.entries(pendingChanges).map(([k, v]) => `${k}=${v}`);
 
     try {
-        logToModal("Applying patches: " + patches.join(", "));
+        logToModal(`Applying patches (${currentPatchMode} mode): ` + patches.join(", "));
 
         // Start live log polling
         await startLogPolling();
 
         const terminalOutput = document.getElementById('terminal-output');
-        const res = await runBackend('patch', ...patches);
+        // Pass patch mode as first arg
+        const res = await runBackend('patch', currentPatchMode, ...patches);
 
         // Stop polling
         stopLogPolling();

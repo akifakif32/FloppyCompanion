@@ -1,103 +1,111 @@
 {
-    "features_1280": [
-        {
-            "key": "superfloppy",
-            "title": "Unlocked Mode",
-            "type": "select",
-            "desc": "CPU and GPU clock tweaks for FloppyKernel.",
-            "options": [
+    "device_families": {
+        "1280": {
+            "patch_mode": "kernel",
+            "features": [
                 {
-                    "val": "1",
-                    "label": "Enabled (Overclock)",
-                    "desc": "CL0 = 2.2 GHz (OC), CL1 = 2.496 GHz (OC), GPU = 1.209 GHz (OC), UV disabled.",
-                    "experimental": false
+                    "key": "superfloppy",
+                    "title": "Unlocked Mode",
+                    "type": "select",
+                    "desc": "CPU and GPU clock tweaks for FloppyKernel.",
+                    "options": [
+                        {
+                            "val": "1",
+                            "label": "Enabled (Overclock)",
+                            "desc": "CL0 = 2.2 GHz (OC), CL1 = 2.496 GHz (OC), GPU = 1.209 GHz (OC), UV disabled.",
+                            "experimental": false
+                        },
+                        {
+                            "val": "2",
+                            "label": "MegaFloppy (Overclock, risky)",
+                            "desc": "CL0 = 2.2 GHz (OC), CL1 = 2.6 GHz (OC), GPU = 1.209 GHz (OC), UV disabled.",
+                            "experimental": true
+                        },
+                        {
+                            "val": "3",
+                            "label": "UltraFloppy (Overclock, risky)",
+                            "desc": "CL0 = 2.2 GHz (OC), CL1 = 2.704 GHz (OC), GPU = 1.209 GHz (OC), UV disabled.",
+                            "experimental": true
+                        },
+                        {
+                            "val": "4",
+                            "label": "CoolFloppy (Underclock)",
+                            "desc": "CL0 = 2.0 GHz (stock), CL1 = 2.112 GHz (UC), GPU = 897 MHz (stock), UV enabled.",
+                            "experimental": false
+                        },
+                        {
+                            "val": "5",
+                            "label": "BalancedFloppy (Overclock)",
+                            "desc": "CL0 = 2.2 GHz (OC), CL1 = 2.4 GHz (stock), GPU = 897 MHz (stock), UV disabled.",
+                            "experimental": false
+                        }
+                    ],
+                    "save": true
                 },
                 {
-                    "val": "2",
-                    "label": "MegaFloppy (Overclock, risky)",
-                    "desc": "CL0 = 2.2 GHz (OC), CL1 = 2.6 GHz (OC), GPU = 1.209 GHz (OC), UV disabled.",
-                    "experimental": true
+                    "key": "force_perm",
+                    "title": "Force Permissive",
+                    "type": "toggle",
+                    "desc": "Force SELinux Permissive mode. For developers.",
+                    "experimental": true,
+                    "save": true
                 },
                 {
-                    "val": "3",
-                    "label": "UltraFloppy (Overclock, risky)",
-                    "desc": "CL0 = 2.2 GHz (OC), CL1 = 2.704 GHz (OC), GPU = 1.209 GHz (OC), UV disabled.",
-                    "experimental": true
+                    "key": "ems_efficient",
+                    "title": "EMS Efficient Mode",
+                    "type": "toggle",
+                    "desc": "Enable EMS efficient scheduler mode. Reduces performance and improves battery.",
+                    "save": true
                 },
                 {
-                    "val": "4",
-                    "label": "CoolFloppy (Underclock)",
-                    "desc": "CL0 = 2.0 GHz (stock), CL1 = 2.112 GHz (UC), GPU = 897 MHz (stock), UV enabled.",
-                    "experimental": false
-                },
-                {
-                    "val": "5",
-                    "label": "BalancedFloppy (Overclock)",
-                    "desc": "CL0 = 2.2 GHz (OC), CL1 = 2.4 GHz (stock), GPU = 897 MHz (stock), UV disabled.",
-                    "experimental": false
+                    "key": "aosp_mode",
+                    "title": "AOSP Mode",
+                    "type": "info",
+                    "desc": "Enable hacks specific to AOSP."
                 }
-            ],
-            "save": true
+            ]
         },
-        {
-            "key": "force_perm",
-            "title": "Force Permissive",
-            "type": "toggle",
-            "desc": "Force SELinux Permissive mode. For developers.",
-            "experimental": true,
-            "save": true
-        },
-        {
-            "key": "ems_efficient",
-            "title": "EMS Efficient Mode",
-            "type": "toggle",
-            "desc": "Enable EMS efficient scheduler mode. Reduces performance and improves battery.",
-            "save": true
-        },
-        {
-            "key": "aosp_mode",
-            "title": "AOSP Mode",
-            "type": "info",
-            "desc": "Enable hacks specific to AOSP."
+        "trinket": {
+            "patch_mode": "header",
+            "features": [
+                {
+                    "key": "no_init_protection",
+                    "title": "Kill Init Protection",
+                    "type": "toggle",
+                    "desc": "Allow Power HALs and init scripts to modify kernel knobs. Enable if you want the ROM to control performance.",
+                    "save": true
+                },
+                {
+                    "key": "legacy_timestamp_source",
+                    "title": "Legacy Timestamp",
+                    "type": "toggle",
+                    "desc": "Fixes video recording length issues on ROMs with legacy camera HALs.",
+                    "save": true
+                },
+                {
+                    "key": "no_msm_perf_boost",
+                    "title": "Disable MSM Boost",
+                    "type": "toggle",
+                    "desc": "Prevent MSM Performance from overwriting CPU min/max frequencies. May reduce responsiveness.",
+                    "save": true
+                },
+                {
+                    "key": "warm_reboot",
+                    "title": "Force Warm Reboot",
+                    "type": "toggle",
+                    "desc": "Preserve RAM on reboot to gather logs easier. Recommended only for debugging, can cause broken WiFi.",
+                    "experimental": true,
+                    "save": true
+                },
+                {
+                    "key": "uname_bpf_spoof",
+                    "title": "BPF Spoofing",
+                    "type": "info",
+                    "desc": "Spoof Linux version for BPF support. Managed externally; changing this manually may cause bootloops.",
+                    "experimental": true,
+                    "save": true
+                }
+            ]
         }
-    ],
-    "features_trinket": [
-        {
-            "key": "no_init_protection",
-            "title": "Kill Init Protection",
-            "type": "toggle",
-            "desc": "Allow Power HALs and init scripts to modify kernel knobs. Enable if you want the ROM to control performance.",
-            "save": true
-        },
-        {
-            "key": "legacy_timestamp_source",
-            "title": "Legacy Timestamp",
-            "type": "toggle",
-            "desc": "Fixes video recording length issues on ROMs with legacy camera HALs.",
-            "save": true
-        },
-        {
-            "key": "no_msm_perf_boost",
-            "title": "Disable MSM Boost",
-            "type": "toggle",
-            "desc": "Prevent MSM Performance from overwriting CPU min/max frequencies. May reduce responsiveness.",
-            "save": true
-        },
-        {
-            "key": "warm_reboot",
-            "title": "Force Warm Reboot",
-            "type": "toggle",
-            "desc": "Preserve RAM on reboot to gather logs easier. Recommended only for debugging, can cause broken WiFi.",
-            "experimental": true,
-            "save": true
-        },
-        {
-            "key": "uname_bpf_spoof",
-            "title": "BPF Spoofing",
-            "type": "info",
-            "desc": "Spoof Linux version for BPF support. Managed externally; changing this manually may cause bootloops.",
-            "experimental": true,
-            "save": true
-        }
-    ]
+    }
 }
