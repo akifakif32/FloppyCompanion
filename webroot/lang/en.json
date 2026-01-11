@@ -76,6 +76,7 @@
         "title": "About",
         "description": "Companion module to configure FloppyKernel.",
         "moduleLinks": "Module links",
+        "projectCredits": "Project credits",
         "kernelLinksTemplate": "{name} links",
         "translationCredits": "Translation credits",
         "repository": "repository",

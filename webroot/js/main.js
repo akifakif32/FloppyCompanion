@@ -489,12 +489,55 @@ async function init() {
             const response = await fetch('credits.json');
             if (response.ok) {
                 const creditsData = await response.json();
-                renderTranslationCredits(translationCreditsList, creditsData);
+
+                const projectCreditsList = document.getElementById('project-credits-list');
+                if (projectCreditsList) {
+                    renderProjectCredits(projectCreditsList, creditsData);
+                }
+
+                if (translationCreditsList) {
+                    renderTranslationCredits(translationCreditsList, creditsData);
+                }
             }
         } catch (e) {
             console.error('Failed to load credits:', e);
         }
     }
+}
+
+function renderProjectCredits(container, data) {
+    if (!data.project_credits || data.project_credits.length === 0) return;
+
+    let html = '<ul class="credits-list">';
+    for (const person of data.project_credits) {
+        let content = '';
+        if (person.url) {
+            content = `<a href="#" class="credits-link" data-url="${person.url}"><strong>${person.name}</strong></a>`;
+        } else {
+            content = `<strong>${person.name}</strong>`;
+        }
+
+        if (person.role) {
+            content += ` <span class="credits-role">(${person.role})</span>`;
+        }
+
+        html += `<li>${content}</li>`;
+    }
+    html += '</ul>';
+    container.innerHTML = html;
+
+    // Add click handlers for links
+    container.querySelectorAll('.credits-link').forEach(a => {
+        a.addEventListener('click', (e) => {
+            e.preventDefault();
+            const url = a.dataset.url;
+            if (window.exec) {
+                window.exec(`am start -a android.intent.action.VIEW -d "${url}"`);
+            } else {
+                window.open(url, '_blank');
+            }
+        });
+    });
 }
 
 function renderTranslationCredits(container, data) {

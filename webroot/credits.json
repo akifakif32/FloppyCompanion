@@ -1,4 +1,11 @@
 {
+    "project_credits": [
+        {
+            "name": "Flopster101",
+            "role": "Developer of module and FloppyKernel",
+            "url": "https://github.com/Flopster101"
+        }
+    ],
     "translations": {
         "en": {
             "name": "English",
