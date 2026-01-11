@@ -122,7 +122,18 @@
                             </div>
                             <div class="info-row">
                                 <span class="label" data-i18n="home.version">Version</span>
-                                <span class="value" id="kernel-version">...</span>
+                                <span class="value-with-icon">
+                                    <span class="value" id="kernel-version">...</span>
+                                    <div id="version-warning" class="status-icon-wrapper hidden">
+                                        <svg class="status-icon warning" viewBox="0 0 24 24"
+                                            onclick="toggleBubble('bubble-version-warning')">
+                                            <path fill="currentColor"
+                                                d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
+                                        </svg>
+                                        <div id="bubble-version-warning" class="status-bubble hidden"
+                                            data-i18n="home.tooltipUnsupported"></div>
+                                    </div>
+                                </span>
                             </div>
                             <div class="info-row">
                                 <span class="label" data-i18n="home.variant">Variant</span>

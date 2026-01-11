@@ -286,6 +286,36 @@ async function init() {
             }
         }
 
+        // Check for unsupported version
+        const versionWarning = document.getElementById('version-warning');
+        if (versionWarning && versionMatch) {
+            const versionStr = versionMatch[1]; // e.g., "6.2" or "1.0"
+            const [major, minor] = versionStr.split('.').map(Number);
+            let isUnsupported = false;
+
+            // Parse kernel name from uname
+            const kernelNameMatch = uname.match(/Floppy[A-Za-z0-9]*/);
+            const kernelName = kernelNameMatch ? kernelNameMatch[0] : '';
+
+            // Floppy1280: minimum v6.2
+            if (kernelName === 'Floppy1280') {
+                if (major < 6 || (major === 6 && minor < 2)) {
+                    isUnsupported = true;
+                }
+            }
+
+            // FloppyTrinketMi: minimum v1.2
+            if (kernelName === 'FloppyTrinketMi') {
+                if (major < 1 || (major === 1 && minor < 2)) {
+                    isUnsupported = true;
+                }
+            }
+
+            if (isUnsupported) {
+                versionWarning.classList.remove('hidden');
+            }
+        }
+
     } else {
         if (statusCard) statusCard.classList.add('hidden');
         if (errorCard) errorCard.classList.remove('hidden');
