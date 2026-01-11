@@ -355,8 +355,158 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Memory Card -->
+                    <div id="memory-card" class="card">
+                        <div class="card-header">
+                            <svg class="icon-svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M15 9H9v6h6V9zm-2 4h-2v-2h2v2zm8-2V9h-2V7c0-1.1-.9-2-2-2h-2V3h-2v2h-2V3H9v2H7c-1.1 0-2 .9-2 2v2H3v2h2v2H3v2h2v2c0 1.1.9 2 2 2h2v2h2v-2h2v2h2v-2h2c1.1 0 2-.9 2-2v-2h2v-2h-2v-2h2zm-4 6H7V7h10v10z" />
+                            </svg>
+                            <span class="card-title">Memory</span>
+                            <div class="status-indicator hidden" id="mem-pending-indicator">Unsaved</div>
+                        </div>
+                        <div class="card-content">
+                            <!-- Swappiness -->
+                            <div class="tweak-row">
+                                <div class="tweak-info-col">
+                                    <span class="tweak-label">Swappiness</span>
+                                    <span class="tweak-val" id="mem-val-swappiness">--</span>
+                                </div>
+                                <div class="tweak-input-container">
+                                    <input type="number" id="mem-swappiness" class="styled-input" placeholder="60">
+                                </div>
+                            </div>
+
+                            <!-- VFS Cache Pressure -->
+                            <div class="tweak-row">
+                                <div class="tweak-info-col">
+                                    <span class="tweak-label">VFS Cache Pressure</span>
+                                    <span class="tweak-val" id="mem-val-vfs_cache_pressure">--</span>
+                                </div>
+                                <div class="tweak-input-container">
+                                    <input type="number" id="mem-vfs_cache_pressure" class="styled-input"
+                                        placeholder="100">
+                                </div>
+                            </div>
+
+                            <!-- Dirty Mode Toggle -->
+                            <div class="tweak-subsection">
+                                <div class="tweak-section-header">
+                                    <span class="tweak-label">Dirty Pages Mode</span>
+                                </div>
+                                <div class="mode-toggle-row">
+                                    <div class="segmented-control">
+                                        <input type="radio" name="mem-dirty-mode" id="mem-mode-ratio" value="ratio"
+                                            checked>
+                                        <label for="mem-mode-ratio">Ratio</label>
+                                        <input type="radio" name="mem-dirty-mode" id="mem-mode-bytes" value="bytes">
+                                        <label for="mem-mode-bytes">Bytes</label>
+                                    </div>
+                                </div>
+
+                                <!-- Group Ratio -->
+                                <div id="mem-group-ratio">
+                                    <div class="tweak-row">
+                                        <div class="tweak-info-col">
+                                            <span class="tweak-label">Dirty Ratio</span>
+                                            <span class="tweak-val" id="mem-val-dirty_ratio">--</span>
+                                        </div>
+                                        <div class="tweak-input-container">
+                                            <input type="number" id="mem-dirty_ratio" class="styled-input"
+                                                placeholder="20">
+                                        </div>
+                                    </div>
+                                    <div class="tweak-row">
+                                        <div class="tweak-info-col">
+                                            <span class="tweak-label">Dirty Backg. Ratio</span>
+                                            <span class="tweak-val" id="mem-val-dirty_background_ratio">--</span>
+                                        </div>
+                                        <div class="tweak-input-container">
+                                            <input type="number" id="mem-dirty_background_ratio" class="styled-input"
+                                                placeholder="10">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Group Bytes -->
+                                <div id="mem-group-bytes" class="hidden">
+                                    <div class="tweak-row">
+                                        <div class="tweak-info-col">
+                                            <span class="tweak-label">Dirty Bytes</span>
+                                            <span class="tweak-val" id="mem-val-dirty_bytes">--</span>
+                                        </div>
+                                        <div class="tweak-input-container">
+                                            <input type="number" id="mem-dirty_bytes" class="styled-input"
+                                                placeholder="0">
+                                        </div>
+                                    </div>
+                                    <div class="tweak-row">
+                                        <div class="tweak-info-col">
+                                            <span class="tweak-label">Dirty Background Bytes</span>
+                                            <span class="tweak-val" id="mem-val-dirty_background_bytes">--</span>
+                                        </div>
+                                        <div class="tweak-input-container">
+                                            <input type="number" id="mem-dirty_background_bytes" class="styled-input"
+                                                placeholder="0">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Writeback / Expire -->
+                            <div class="tweak-row">
+                                <div class="tweak-info-col">
+                                    <span class="tweak-label">Dirty Writeback (cs)</span>
+                                    <span class="tweak-val" id="mem-val-dirty_writeback_centisecs">--</span>
+                                </div>
+                                <div class="tweak-input-container">
+                                    <input type="number" id="mem-dirty_writeback_centisecs" class="styled-input"
+                                        placeholder="500">
+                                </div>
+                            </div>
+                            <div class="tweak-row">
+                                <div class="tweak-info-col">
+                                    <span class="tweak-label">Dirty Expire (cs)</span>
+                                    <span class="tweak-val" id="mem-val-dirty_expire_centisecs">--</span>
+                                </div>
+                                <div class="tweak-input-container">
+                                    <input type="number" id="mem-dirty_expire_centisecs" class="styled-input"
+                                        placeholder="3000">
+                                </div>
+                            </div>
+
+                            <!-- Other -->
+                            <div class="tweak-row">
+                                <div class="tweak-info-col">
+                                    <span class="tweak-label">Stat Interval</span>
+                                    <span class="tweak-val" id="mem-val-stat_interval">--</span>
+                                </div>
+                                <div class="tweak-input-container">
+                                    <input type="number" id="mem-stat_interval" class="styled-input" placeholder="1">
+                                </div>
+                            </div>
+                            <div class="tweak-row">
+                                <div class="tweak-info-col">
+                                    <span class="tweak-label">Watermark Scale</span>
+                                    <span class="tweak-val" id="mem-val-watermark_scale_factor">--</span>
+                                </div>
+                                <div class="tweak-input-container">
+                                    <input type="number" id="mem-watermark_scale_factor" class="styled-input"
+                                        placeholder="10">
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="tweak-actions">
+                                <button class="tweak-action-btn secondary" id="mem-btn-save">Save</button>
+                                <button class="tweak-action-btn secondary" id="mem-btn-apply">Apply</button>
+                                <button class="tweak-action-btn primary" id="mem-btn-save-apply">Save & Apply</button>
+                            </div>
+                        </div>
+                    </div>
                 </div> <!-- End Inner Container -->
-            </div>
+            </div> <!-- End Tab Tweaks -->
 
             <!-- Tab: About -->
             <div id="tab-about" class="tab-content">

@@ -23,3 +23,8 @@ fi
 if [ -f "$MODDIR/tweaks/zram.sh" ]; then
     sh "$MODDIR/tweaks/zram.sh" apply_saved
 fi
+
+# Memory
+if [ -f "$MODDIR/tweaks/memory.sh" ]; then
+    sh "$MODDIR/tweaks/memory.sh" apply_saved
+fi

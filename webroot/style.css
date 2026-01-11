@@ -1503,3 +1503,118 @@ body {
         transform: rotate(360deg);
     }
 }
+
+/* --- Memory Tweak Styles --- */
+
+.tweak-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 6px;
+    border-bottom: 1px solid var(--md-sys-color-surface-variant);
+}
+
+.tweak-row:last-child {
+    border-bottom: none;
+}
+
+.tweak-info-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.tweak-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--md-sys-color-on-surface);
+}
+
+.tweak-val {
+    font-size: 11px;
+    color: var(--md-sys-color-primary);
+    margin-top: 2px;
+}
+
+.tweak-input-container {
+    flex-shrink: 0;
+}
+
+.styled-input {
+    width: 90px;
+    padding: 8px 12px;
+    border: 1px solid var(--md-sys-color-outline);
+    border-radius: 8px;
+    background-color: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
+    font-size: 14px;
+    text-align: center;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.styled-input:focus {
+    border-color: var(--md-sys-color-primary);
+    border-width: 2px;
+    padding: 7px 11px;
+    /* Compensate for border width */
+}
+
+.tweak-section-header {
+    margin-top: 20px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--md-sys-color-primary);
+    padding-left: 6px;
+}
+
+/* Segmented Control */
+.segmented-control {
+    display: flex;
+    background-color: var(--md-sys-color-surface-container-high);
+    border-radius: 20px;
+    padding: 4px;
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.segmented-control input[type="radio"] {
+    display: none;
+}
+
+.segmented-control label {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 16px;
+    cursor: pointer;
+    color: var(--md-sys-color-on-surface-variant);
+    transition: all 0.2s;
+}
+
+.segmented-control input[type="radio"]:checked+label {
+    background-color: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.tweak-subsection {
+    background-color: var(--md-sys-color-surface-container-high);
+    border-radius: 12px;
+    padding: 12px;
+    margin: 16px 0;
+}
+
+.tweak-subsection .tweak-section-header {
+    margin-top: 0;
+    padding-left: 0;
+}
+
+.tweak-subsection .tweak-row:last-child {
+    border-bottom: none;
+}

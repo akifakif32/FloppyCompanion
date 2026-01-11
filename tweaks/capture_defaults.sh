@@ -45,6 +45,18 @@ cat > "$OUTPUT_FILE" << EOF
       "enabled": "$ZRAM_ENABLED",
       "disksize": "$ZRAM_DISKSIZE",
       "algorithm": "$ZRAM_ALGO"
+    },
+    "memory": {
+      "swappiness": "$(cat /proc/sys/vm/swappiness 2>/dev/null || echo 60)",
+      "dirty_ratio": "$(cat /proc/sys/vm/dirty_ratio 2>/dev/null || echo 20)",
+      "dirty_bytes": "$(cat /proc/sys/vm/dirty_bytes 2>/dev/null || echo 0)",
+      "dirty_background_ratio": "$(cat /proc/sys/vm/dirty_background_ratio 2>/dev/null || echo 10)",
+      "dirty_background_bytes": "$(cat /proc/sys/vm/dirty_background_bytes 2>/dev/null || echo 0)",
+      "dirty_writeback_centisecs": "$(cat /proc/sys/vm/dirty_writeback_centisecs 2>/dev/null || echo 500)",
+      "dirty_expire_centisecs": "$(cat /proc/sys/vm/dirty_expire_centisecs 2>/dev/null || echo 3000)",
+      "stat_interval": "$(cat /proc/sys/vm/stat_interval 2>/dev/null || echo 1)",
+      "vfs_cache_pressure": "$(cat /proc/sys/vm/vfs_cache_pressure 2>/dev/null || echo 100)",
+      "watermark_scale_factor": "$(cat /proc/sys/vm/watermark_scale_factor 2>/dev/null || echo 10)"
     }
   }
 }
