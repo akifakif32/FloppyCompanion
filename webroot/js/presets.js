@@ -137,7 +137,7 @@ async function showLoadPresetModal() {
 
     const result = await showConfirmModal({
         title: 'Load Preset',
-        body: `<p>${message}</p><p>This will override your current settings.</p>`,
+        body: `<p>${message}</p><p>This will override and <strong>save</strong> your current settings.</p>`,
         iconClass: 'info',
         confirmText: 'Apply Now',
         cancelText: 'Cancel',
@@ -173,12 +173,15 @@ async function handleLoadPreset() {
     // Load to UI
     loadPresetToUI(presetData);
 
+    // Always save tweaks to persistence
+    await saveAllTweaks();
+
     if (action === 'apply') {
-        // Apply all tweaks
+        // Apply all tweaks immediately
         await applyAllTweaks();
-        showToast('Preset applied');
+        showToast('Preset saved & applied');
     } else {
-        showToast('Preset loaded');
+        showToast('Preset loaded & saved');
     }
 }
 
