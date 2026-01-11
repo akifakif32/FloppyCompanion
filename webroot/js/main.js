@@ -59,6 +59,72 @@ async function init() {
     // Init Theme
     applyTheme(currentThemeMode);
 
+    // --- Reboot Dropdown Logic ---
+    const rebootBtn = document.getElementById('reboot-btn');
+    const rebootMenu = document.getElementById('reboot-menu');
+
+    if (rebootBtn && rebootMenu) {
+        // Toggle dropdown on button click
+        rebootBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isVisible = rebootMenu.classList.contains('visible');
+            if (isVisible) {
+                rebootMenu.classList.remove('visible');
+                setTimeout(() => rebootMenu.classList.add('hidden'), 200);
+            } else {
+                rebootMenu.classList.remove('hidden');
+                setTimeout(() => rebootMenu.classList.add('visible'), 10);
+            }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            if (rebootMenu.classList.contains('visible')) {
+                rebootMenu.classList.remove('visible');
+                setTimeout(() => rebootMenu.classList.add('hidden'), 200);
+            }
+        });
+
+        // Handle reboot menu item clicks
+        rebootMenu.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                const action = item.dataset.action;
+
+                // Map action to command
+                const rebootCommands = {
+                    'system': 'svc power reboot',
+                    'recovery': 'reboot recovery',
+                    'fastboot': 'reboot bootloader',
+                    'download': 'reboot download',
+                    'bootloader': 'reboot bootloader'
+                };
+
+                const command = rebootCommands[action];
+                if (!command) return;
+
+                // Close dropdown
+                rebootMenu.classList.remove('visible');
+                setTimeout(() => rebootMenu.classList.add('hidden'), 200);
+
+                // Only confirm if there are pending changes
+                const actionName = item.textContent;
+                if (window.hasPendingChanges && window.hasPendingChanges()) {
+                    const confirmed = await showConfirmModal({
+                        title: actionName,
+                        body: `<p>Are you sure you want to ${actionName.toLowerCase()}?</p><p><strong>You have unapplied changes that will be lost!</strong></p>`,
+                        iconClass: 'warning',
+                        confirmText: 'Reboot'
+                    });
+
+                    if (!confirmed) return;
+                }
+
+                await exec(command);
+            });
+        });
+    }
+
     // 1. Initialize UI Navigation
     initNavigation();
 
@@ -119,6 +185,16 @@ async function init() {
         if (subtitleEl) subtitleEl.textContent = 'Managing: Floppy1280';
     } else {
         if (subtitleEl) subtitleEl.textContent = 'Managing: FloppyKernel';
+    }
+
+    // Platform-specific reboot options
+    const samsungOptions = document.querySelectorAll('.platform-samsung');
+    const trinketOptions = document.querySelectorAll('.platform-trinket');
+    if (devInfo.is1280) {
+        samsungOptions.forEach(el => el.classList.remove('hidden'));
+    }
+    if (devInfo.isTrinketMi) {
+        trinketOptions.forEach(el => el.classList.remove('hidden'));
     }
 
     // Parse Linux Version

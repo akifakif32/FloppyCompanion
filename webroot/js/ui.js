@@ -25,6 +25,24 @@ function updateSlide(index) {
         }
     }
 
+    // --- Reboot Dropdown Visibility ---
+    const rebootContainer = document.getElementById('reboot-dropdown-container');
+    const rebootMenu = document.getElementById('reboot-menu');
+    if (rebootContainer) {
+        // 'Features' tab is index 1
+        if (index === 1) {
+            rebootContainer.classList.remove('hidden');
+        } else {
+            rebootContainer.classList.add('hidden');
+            // Close dropdown when leaving tab
+            if (rebootMenu) {
+                rebootMenu.classList.remove('visible');
+                rebootMenu.classList.add('hidden');
+            }
+        }
+    }
+
+
     // Update Bottom Nav
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach((nav, i) => {

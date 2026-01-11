@@ -466,3 +466,8 @@ document.addEventListener('click', () => {
         b.classList.add('hidden');
     });
 });
+
+// --- Expose pending changes check ---
+window.hasPendingChanges = function () {
+    return Object.keys(pendingChanges).length > 0;
+};
