@@ -45,7 +45,44 @@ DESCRIPTION="Companion module to tweak FloppyKernel."
 
 if echo "$KERN_VER" | grep -q "Floppy"; then
     STATUS="✅"
-    INFO="$KERN_VER"
+    
+    # Parse kernel name (Floppy1280, FloppyTrinketMi, etc)
+    KERN_NAME=$(echo "$KERN_VER" | grep -o 'Floppy[A-Za-z0-9]*')
+    
+    # Parse version
+    VERSION=$(echo "$KERN_VER" | grep -o '\-v[0-9]*\.[0-9]*' | tr -d '-')
+    
+    # Parse variant
+    VARIANT=""
+    for v in V SKS KN RKS; do
+        if echo "$KERN_VER" | grep -q "\-$v"; then
+            VARIANT="$v"
+            break
+        fi
+    done
+    
+    # Parse build type
+    if echo "$KERN_VER" | grep -q "\-release"; then
+        BUILD_TYPE="Release"
+    else
+        BUILD_TYPE="Testing"
+        # Try to get git hash
+        GIT_HASH=$(echo "$KERN_VER" | grep -o '\-g[0-9a-f]*' | sed 's/-g//')
+        if [ -n "$GIT_HASH" ]; then
+            BUILD_TYPE="$BUILD_TYPE ($GIT_HASH)"
+        fi
+    fi
+    
+    # Check for dirty flag
+    DIRTY=""
+    if echo "$KERN_VER" | grep -q "dirty"; then
+        DIRTY=", dirty"
+    fi
+    
+    # Assemble formatted info
+    INFO="$KERN_NAME $VERSION"
+    [ -n "$VARIANT" ] && INFO="$INFO, $VARIANT"
+    INFO="$INFO, $BUILD_TYPE$DIRTY"
 else
     STATUS="❌"
     INFO="Not Floppy or incompatible version"
