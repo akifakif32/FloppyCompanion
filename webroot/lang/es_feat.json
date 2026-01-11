@@ -1,0 +1,62 @@
+{
+    "1280": {
+        "superfloppy": {
+            "title": "Modo Unlocked",
+            "desc": "Ajustes de reloj de CPU y GPU para FloppyKernel.",
+            "options": {
+                "1": {
+                    "label": "Activado (Overclock)",
+                    "desc": "CL0 = 2.2 GHz (OC), CL1 = 2.496 GHz (OC), GPU = 1.209 GHz (OC), UV desactivado."
+                },
+                "2": {
+                    "label": "MegaFloppy (Overclock, riesgoso)",
+                    "desc": "CL0 = 2.2 GHz (OC), CL1 = 2.6 GHz (OC), GPU = 1.209 GHz (OC), UV desactivado."
+                },
+                "3": {
+                    "label": "UltraFloppy (Overclock, riesgoso)",
+                    "desc": "CL0 = 2.2 GHz (OC), CL1 = 2.704 GHz (OC), GPU = 1.209 GHz (OC), UV desactivado."
+                },
+                "4": {
+                    "label": "CoolFloppy (Underclock)",
+                    "desc": "CL0 = 2.0 GHz (stock), CL1 = 2.112 GHz (UC), GPU = 897 MHz (stock), UV activado."
+                },
+                "5": {
+                    "label": "BalancedFloppy (Overclock)",
+                    "desc": "CL0 = 2.2 GHz (OC), CL1 = 2.4 GHz (stock), GPU = 897 MHz (stock), UV desactivado."
+                }
+            }
+        }
+    },
+    "force_perm": {
+        "title": "Forzar Permisivo",
+        "desc": "Forzar modo SELinux Permisivo. Para desarrolladores."
+    },
+    "ems_efficient": {
+        "title": "Modo EMS Eficiente",
+        "desc": "Activa el modo eficiente del scheduler EMS. Reduce rendimiento y mejora batería."
+    },
+    "aosp_mode": {
+        "title": "Modo AOSP",
+        "desc": "Activa hacks específicos para AOSP."
+    },
+    "no_init_protection": {
+        "title": "Desactivar Protección Init",
+        "desc": "Permite que los Power HALs y scripts de init modifiquen parámetros del kernel. Activa si quieres que la ROM controle el rendimiento."
+    },
+    "legacy_timestamp_source": {
+        "title": "Timestamp Legado",
+        "desc": "Corrige problemas de duración de grabación de video en ROMs con HALs de cámara antiguas."
+    },
+    "no_msm_perf_boost": {
+        "title": "Desactivar Boost MSM",
+        "desc": "Evita que MSM Performance sobrescriba frecuencias min/max de CPU. Puede reducir la capacidad de respuesta."
+    },
+    "warm_reboot": {
+        "title": "Forzar Reinicio en Caliente",
+        "desc": "Preserva la RAM al reiniciar para recopilar logs más fácilmente. Recomendado solo para depuración, puede causar WiFi roto."
+    },
+    "uname_bpf_spoof": {
+        "title": "Spoofing BPF",
+        "desc": "Falsifica la versión de Linux para soporte BPF. Gestionado externamente; cambiar esto manualmente puede causar bootloops."
+    }
+}

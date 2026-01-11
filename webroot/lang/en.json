@@ -31,7 +31,8 @@
         "optionEnabled": "Enabled",
         "optionDisabled": "Disabled",
         "pendingChanges": "Pending",
-        "noDescription": "No description available"
+        "noDescription": "No description available",
+        "disabledDesc": "Disable this feature."
     },
     "tweaks": {
         "title": "Tweaks",

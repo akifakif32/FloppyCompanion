@@ -1,0 +1,62 @@
+{
+    "1280": {
+        "superfloppy": {
+            "title": "Unlocked Mode",
+            "desc": "CPU and GPU clock tweaks for FloppyKernel.",
+            "options": {
+                "1": {
+                    "label": "Enabled (Overclock)",
+                    "desc": "CL0 = 2.2 GHz (OC), CL1 = 2.496 GHz (OC), GPU = 1.209 GHz (OC), UV disabled."
+                },
+                "2": {
+                    "label": "MegaFloppy (Overclock, risky)",
+                    "desc": "CL0 = 2.2 GHz (OC), CL1 = 2.6 GHz (OC), GPU = 1.209 GHz (OC), UV disabled."
+                },
+                "3": {
+                    "label": "UltraFloppy (Overclock, risky)",
+                    "desc": "CL0 = 2.2 GHz (OC), CL1 = 2.704 GHz (OC), GPU = 1.209 GHz (OC), UV disabled."
+                },
+                "4": {
+                    "label": "CoolFloppy (Underclock)",
+                    "desc": "CL0 = 2.0 GHz (stock), CL1 = 2.112 GHz (UC), GPU = 897 MHz (stock), UV enabled."
+                },
+                "5": {
+                    "label": "BalancedFloppy (Overclock)",
+                    "desc": "CL0 = 2.2 GHz (OC), CL1 = 2.4 GHz (stock), GPU = 897 MHz (stock), UV disabled."
+                }
+            }
+        }
+    },
+    "force_perm": {
+        "title": "Force Permissive",
+        "desc": "Force SELinux Permissive mode. For developers."
+    },
+    "ems_efficient": {
+        "title": "EMS Efficient Mode",
+        "desc": "Enable EMS efficient scheduler mode. Reduces performance and improves battery."
+    },
+    "aosp_mode": {
+        "title": "AOSP Mode",
+        "desc": "Enable hacks specific to AOSP."
+    },
+    "no_init_protection": {
+        "title": "Kill Init Protection",
+        "desc": "Allow Power HALs and init scripts to modify kernel knobs. Enable if you want the ROM to control performance."
+    },
+    "legacy_timestamp_source": {
+        "title": "Legacy Timestamp",
+        "desc": "Fixes video recording length issues on ROMs with legacy camera HALs."
+    },
+    "no_msm_perf_boost": {
+        "title": "Disable MSM Boost",
+        "desc": "Prevent MSM Performance from overwriting CPU min/max frequencies. May reduce responsiveness."
+    },
+    "warm_reboot": {
+        "title": "Force Warm Reboot",
+        "desc": "Preserve RAM on reboot to gather logs easier. Recommended only for debugging, can cause broken WiFi."
+    },
+    "uname_bpf_spoof": {
+        "title": "BPF Spoofing",
+        "desc": "Spoof Linux version for BPF support. Managed externally; changing this manually may cause bootloops."
+    }
+}

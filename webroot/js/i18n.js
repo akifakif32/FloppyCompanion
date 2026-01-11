@@ -5,6 +5,8 @@ const I18N = {
     fallbackLang: 'en',
     strings: {},
     fallbackStrings: {},
+    featureStrings: {},
+    fallbackFeatureStrings: {},
     availableLanguages: [
         { code: 'en', name: 'English' },
         { code: 'es', name: 'Español' }
@@ -26,10 +28,12 @@ const I18N = {
 
         // Always load fallback first
         await this.loadLanguage(this.fallbackLang, true);
+        await this.loadFeatureStrings(this.fallbackLang, true);
 
         // Load current language if different from fallback
         if (this.currentLang !== this.fallbackLang) {
             await this.loadLanguage(this.currentLang, false);
+            await this.loadFeatureStrings(this.currentLang, false);
         }
 
         this.applyTranslations();
@@ -49,6 +53,23 @@ const I18N = {
             }
         } catch (e) {
             console.error(`Failed to load language ${code}:`, e);
+        }
+    },
+
+    // Load feature translation file
+    async loadFeatureStrings(code, isFallback = false) {
+        try {
+            const response = await fetch(`lang/${code}_feat.json`);
+            if (!response.ok) throw new Error(`Failed to load ${code}_feat`);
+            const data = await response.json();
+
+            if (isFallback) {
+                this.fallbackFeatureStrings = data;
+            } else {
+                this.featureStrings = data;
+            }
+        } catch (e) {
+            console.error(`Failed to load feature strings ${code}:`, e);
         }
     },
 
@@ -76,6 +97,81 @@ const I18N = {
         }
 
         return value;
+    },
+
+    // Get feature translation
+    // tf('superfloppy', 'title', null, '1280') -> checks 1280.superfloppy first
+    tf(featureKey, field, optionVal = null, family = null) {
+        let value;
+
+        const tryGet = (namespace) => {
+            if (!namespace || !this.featureStrings[namespace]) return undefined;
+            const feat = this.featureStrings[namespace][featureKey];
+            if (!feat) return undefined;
+
+            if (optionVal !== null) {
+                if (feat.options && feat.options[optionVal]) {
+                    return feat.options[optionVal][field];
+                }
+            } else {
+                return feat[field];
+            }
+        };
+
+        const tryGetFallback = (namespace) => {
+            if (!namespace || !this.fallbackFeatureStrings[namespace]) return undefined;
+            const feat = this.fallbackFeatureStrings[namespace][featureKey];
+            if (!feat) return undefined;
+
+            if (optionVal !== null) {
+                if (feat.options && feat.options[optionVal]) {
+                    return feat.options[optionVal][field];
+                }
+            } else {
+                return feat[field];
+            }
+        };
+
+        // 1. Try Specific Family (Current Lang)
+        if (family) {
+            value = tryGet(family);
+        }
+
+        // 2. Try Global (Current Lang)
+        if (value === undefined) {
+            // Helper for global (root) lookup
+            const feat = this.featureStrings[featureKey];
+            if (feat) {
+                if (optionVal !== null) {
+                    if (feat.options && feat.options[optionVal]) {
+                        value = feat.options[optionVal][field];
+                    }
+                } else {
+                    value = feat[field];
+                }
+            }
+        }
+
+        // 3. Try Specific Family (Fallback Lang)
+        if (value === undefined && family) {
+            value = tryGetFallback(family);
+        }
+
+        // 4. Try Global (Fallback Lang)
+        if (value === undefined) {
+            const feat = this.fallbackFeatureStrings[featureKey];
+            if (feat) {
+                if (optionVal !== null) {
+                    if (feat.options && feat.options[optionVal]) {
+                        value = feat.options[optionVal][field];
+                    }
+                } else {
+                    value = feat[field];
+                }
+            }
+        }
+
+        return value; // Return undefined if not found (caller will use original)
     },
 
     // Helper to get nested object value
@@ -114,8 +210,10 @@ const I18N = {
 
         if (code === this.fallbackLang) {
             this.strings = this.fallbackStrings;
+            this.featureStrings = this.fallbackFeatureStrings;
         } else {
             await this.loadLanguage(code, false);
+            await this.loadFeatureStrings(code, false);
         }
 
         this.applyTranslations();
@@ -130,6 +228,12 @@ function t(key, replacements) {
     return I18N.t(key, replacements);
 }
 
+function tf(featureKey, field, optionVal = null, family = null) {
+    return I18N.tf(featureKey, field, optionVal, family);
+}
+
 // Export for module usage
 window.I18N = I18N;
 window.t = t;
+window.tf = tf;
+

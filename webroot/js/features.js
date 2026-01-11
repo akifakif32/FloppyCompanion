@@ -6,6 +6,7 @@ let showExperimental = false; // Experimental features toggle
 let allowReadonlyPatch = false; // Allow patching read-only (info) features
 let currentSchema = null; // Current feature schema
 let currentProcCmdline = null; // Current /proc/cmdline
+let currentFamily = null; // Current device family key for translation
 let currentPatchMode = 'kernel'; // Current patch mode (kernel/header)
 let isTrinketMi = false; // State for schema selection (set during init)
 
@@ -99,6 +100,9 @@ async function loadFeatures() {
 
         const schema = deviceFamily.features;
         currentPatchMode = deviceFamily.patch_mode || 'kernel';
+
+        // Set global family for translation lookups
+        currentFamily = familyKey;
 
         // Retrieve cmdline
         const procCmdline = await exec('cat /proc/cmdline');
@@ -243,9 +247,11 @@ function renderFeatures(schema, procCmdline) {
         let bodyControls = '';
 
         if (item.type === 'select') {
-            // Add "Disabled" option
+            // Add "Disabled" option with translated strings
+            const disabledLabel = t('features.optionDisabled') || 'Disabled';
+            const disabledDesc = t('features.disabledDesc') || 'Disable this feature.';
             const optionsWithDisabled = [
-                { val: '0', label: 'Disabled', desc: 'Disable this feature.', experimental: false },
+                { val: '0', label: disabledLabel, desc: disabledDesc, experimental: false, isDisabledOption: true },
                 ...item.options
             ];
 
@@ -265,10 +271,10 @@ function renderFeatures(schema, procCmdline) {
                      onclick="updateFeature('${item.key}', '${opt.val}', this)">
                     ${expBadge}
                     <div class="option-header">
-                        <span class="option-title">${opt.label}</span>
+                        <span class="option-title">${tf(item.key, 'label', opt.val, currentFamily) || opt.label}</span>
                     </div>
                     <div class="option-body">
-                        <div class="option-desc">${opt.desc || ''}</div>
+                        <div class="option-desc">${tf(item.key, 'desc', opt.val, currentFamily) || opt.desc || ''}</div>
                         <span class="option-val">${opt.val}</span>
                     </div>
                 </div>
@@ -293,9 +299,9 @@ function renderFeatures(schema, procCmdline) {
             ${featureExpBadge}
             <div class="feature-header">
                 <div class="feature-info">
-                    <h3 class="feature-title">${item.title}</h3>
+                    <h3 class="feature-title">${tf(item.key, 'title', null, currentFamily) || item.title}</h3>
                     <div class="feature-key">${item.key || ''}</div>
-                    <div class="feature-desc">${item.desc || ''}</div>
+                    <div class="feature-desc">${tf(item.key, 'desc', null, currentFamily) || item.desc || ''}</div>
                 </div>
                 <div class="feature-action">
                     ${headerControl}
@@ -483,3 +489,10 @@ document.addEventListener('click', () => {
 window.hasPendingChanges = function () {
     return Object.keys(pendingChanges).length > 0;
 };
+
+// Listen for language changes to re-render features
+document.addEventListener('languageChanged', (e) => {
+    if (currentSchema && currentProcCmdline !== null) {
+        renderFeatures(currentSchema, currentProcCmdline);
+    }
+});
