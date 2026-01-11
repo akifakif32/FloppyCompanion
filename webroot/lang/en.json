@@ -73,7 +73,12 @@
             "watermarkScale": "Watermark Scale"
         },
         "iosched": {
-            "title": "I/O Scheduler"
+            "ioScheduler": "I/O Scheduler"
+        },
+        "tooltip": {
+            "zram": "Compressed RAM block device. Helps multitasking by compressing data in RAM. Usually, higher size translates to more apps fitting in ZRAM.",
+            "memory": "Settings to control the Linux Virtual Memory (VM) subsystem. Adjusts how the kernel balances performance, battery life, and multitasking.",
+            "ioScheduler": "Algorithm used to order and merge I/O requests. Affects storage performance and latency."
         }
     },
     "about": {

@@ -218,6 +218,10 @@ body.theme-light.theme-orange {
     opacity: 1;
 }
 
+.status-icon {
+    -webkit-tap-highlight-color: transparent;
+}
+
 .status-icon.reboot {
     color: #4caf50;
     /* Green */
@@ -230,17 +234,51 @@ body.theme-light.theme-orange {
 
 .status-bubble {
     position: absolute;
-    bottom: 32px;
+    bottom: 125%;
+    /* Above icon */
     right: 0;
+    left: auto;
+    transform: none;
     background-color: var(--md-sys-color-surface-variant);
     color: var(--md-sys-color-on-surface-variant);
     padding: 8px 12px;
     border-radius: 8px;
     font-size: 12px;
+    width: max-content;
+    max-width: 200px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    pointer-events: none;
+    text-align: left;
+    white-space: normal;
+    text-transform: none;
+    font-weight: 400;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: normal;
+    line-height: 1.4;
+}
+
+.status-bubble.center {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
     width: 200px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    z-index: 10;
-    /* Triangle pointer */
+}
+
+.status-bubble::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    right: 10px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--md-sys-color-surface-variant) transparent transparent transparent;
+}
+
+.status-bubble.center::after {
+    left: 50%;
+    right: auto;
+    margin-left: -5px;
 }
 
 .status-bubble.hidden {

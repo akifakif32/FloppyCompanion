@@ -312,6 +312,17 @@
                                     d="M15 9H9v6h6V9zm-2 4h-2v-2h2v2zm8-2V9h-2V7c0-1.1-.9-2-2-2h-2V3h-2v2h-2V3H9v2H7c-1.1 0-2 .9-2 2v2H3v2h2v2H3v2h2v2c0 1.1.9 2 2 2h2v2h2v-2h2v2h2v-2h2c1.1 0 2-.9 2-2v-2h2v-2h-2v-2h2zm-4 6H7V7h10v10z" />
                             </svg>
                             <span class="card-title" data-i18n="tweaks.zram.title">ZRAM</span>
+                            <div class="status-icon-wrapper"
+                                style="position:relative; display:inline-block; vertical-align:middle; margin-left:8px;">
+                                <svg class="status-icon info" onclick="toggleBubble('bubble-tweak-zram', event)"
+                                    viewBox="0 0 24 24"
+                                    style="width:18px;height:18px;cursor:pointer;color:var(--md-sys-color-primary);">
+                                    <path fill="currentColor"
+                                        d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+                                </svg>
+                                <div id="bubble-tweak-zram" class="status-bubble center hidden"
+                                    data-i18n="tweaks.tooltip.zram"></div>
+                            </div>
                             <span id="zram-pending-indicator" class="pending-indicator hidden"
                                 data-i18n="tweaks.unsaved">Unsaved</span>
                         </div>
@@ -387,6 +398,17 @@
                                     d="M15 9H9v6h6V9zm-2 4h-2v-2h2v2zm8-2V9h-2V7c0-1.1-.9-2-2-2h-2V3h-2v2h-2V3H9v2H7c-1.1 0-2 .9-2 2v2H3v2h2v2H3v2h2v2c0 1.1.9 2 2 2h2v2h2v-2h2v2h2v-2h2c1.1 0 2-.9 2-2v-2h2v-2h-2v-2h2zm-4 6H7V7h10v10z" />
                             </svg>
                             <span class="card-title" data-i18n="tweaks.memory.title">Memory</span>
+                            <div class="status-icon-wrapper"
+                                style="position:relative; display:inline-block; vertical-align:middle; margin-left:8px;">
+                                <svg class="status-icon info" onclick="toggleBubble('bubble-tweak-memory', event)"
+                                    viewBox="0 0 24 24"
+                                    style="width:18px;height:18px;cursor:pointer;color:var(--md-sys-color-primary);">
+                                    <path fill="currentColor"
+                                        d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+                                </svg>
+                                <div id="bubble-tweak-memory" class="status-bubble center hidden"
+                                    data-i18n="tweaks.tooltip.memory"></div>
+                            </div>
                             <span id="mem-pending-indicator" class="pending-indicator hidden"
                                 data-i18n="tweaks.unsaved">
                                 Unsaved</span>
@@ -475,7 +497,8 @@
                                     <div class="tweak-row">
                                         <div class="tweak-info-col">
                                             <span class="tweak-label"
-                                                data-i18n="tweaks.memory.dirtyBackgroundBytes">Dirty Background
+                                                data-i18n="tweaks.memory.dirtyBackgroundBytes">Dirty
+                                                Background
                                                 Bytes</span>
                                             <span class="tweak-val" id="mem-val-dirty_background_bytes">--</span>
                                         </div>
@@ -486,66 +509,52 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Writeback / Expire -->
-                            <div class="tweak-row">
-                                <div class="tweak-info-col">
-                                    <span class="tweak-label" data-i18n="tweaks.memory.dirtyWriteback">Dirty Writeback
-                                        (cs)</span>
-                                    <span class="tweak-val" id="mem-val-dirty_writeback_centisecs">--</span>
-                                </div>
-                                <div class="tweak-input-container">
-                                    <input type="number" id="mem-dirty_writeback_centisecs" class="styled-input"
-                                        placeholder="500">
-                                </div>
+                        </div>
+                        <div class="tweak-row">
+                            <div class="tweak-info-col">
+                                <span class="tweak-label" data-i18n="tweaks.memory.dirtyExpire">Dirty Expire
+                                    (cs)</span>
+                                <span class="tweak-val" id="mem-val-dirty_expire_centisecs">--</span>
                             </div>
-                            <div class="tweak-row">
-                                <div class="tweak-info-col">
-                                    <span class="tweak-label" data-i18n="tweaks.memory.dirtyExpire">Dirty Expire
-                                        (cs)</span>
-                                    <span class="tweak-val" id="mem-val-dirty_expire_centisecs">--</span>
-                                </div>
-                                <div class="tweak-input-container">
-                                    <input type="number" id="mem-dirty_expire_centisecs" class="styled-input"
-                                        placeholder="3000">
-                                </div>
-                            </div>
-
-                            <!-- Other -->
-                            <div class="tweak-row">
-                                <div class="tweak-info-col">
-                                    <span class="tweak-label" data-i18n="tweaks.memory.statInterval">Stat
-                                        Interval</span>
-                                    <span class="tweak-val" id="mem-val-stat_interval">--</span>
-                                </div>
-                                <div class="tweak-input-container">
-                                    <input type="number" id="mem-stat_interval" class="styled-input" placeholder="1">
-                                </div>
-                            </div>
-                            <div class="tweak-row">
-                                <div class="tweak-info-col">
-                                    <span class="tweak-label" data-i18n="tweaks.memory.watermarkScale">Watermark
-                                        Scale</span>
-                                    <span class="tweak-val" id="mem-val-watermark_scale_factor">--</span>
-                                </div>
-                                <div class="tweak-input-container">
-                                    <input type="number" id="mem-watermark_scale_factor" class="styled-input"
-                                        placeholder="10">
-                                </div>
-                            </div>
-
-                            <!-- Actions -->
-                            <div class="tweak-actions">
-                                <button class="tweak-action-btn secondary" id="mem-btn-save"
-                                    data-i18n="tweaks.save">Save</button>
-                                <button class="tweak-action-btn secondary" id="mem-btn-apply"
-                                    data-i18n="tweaks.apply">Apply</button>
-                                <button class="tweak-action-btn primary" id="mem-btn-save-apply"
-                                    data-i18n="tweaks.saveApply">Save & Apply</button>
+                            <div class="tweak-input-container">
+                                <input type="number" id="mem-dirty_expire_centisecs" class="styled-input"
+                                    placeholder="3000">
                             </div>
                         </div>
-                    </div>
 
+                        <!-- Other -->
+                        <div class="tweak-row">
+                            <div class="tweak-info-col">
+                                <span class="tweak-label" data-i18n="tweaks.memory.statInterval">Stat
+                                    Interval</span>
+                                <span class="tweak-val" id="mem-val-stat_interval">--</span>
+                            </div>
+                            <div class="tweak-input-container">
+                                <input type="number" id="mem-stat_interval" class="styled-input" placeholder="1">
+                            </div>
+                        </div>
+                        <div class="tweak-row">
+                            <div class="tweak-info-col">
+                                <span class="tweak-label" data-i18n="tweaks.memory.watermarkScale">Watermark
+                                    Scale</span>
+                                <span class="tweak-val" id="mem-val-watermark_scale_factor">--</span>
+                            </div>
+                            <div class="tweak-input-container">
+                                <input type="number" id="mem-watermark_scale_factor" class="styled-input"
+                                    placeholder="10">
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="tweak-actions">
+                            <button class="tweak-action-btn secondary" id="mem-btn-save"
+                                data-i18n="tweaks.save">Save</button>
+                            <button class="tweak-action-btn secondary" id="mem-btn-apply"
+                                data-i18n="tweaks.apply">Apply</button>
+                            <button class="tweak-action-btn primary" id="mem-btn-save-apply"
+                                data-i18n="tweaks.saveApply">Save & Apply</button>
+                        </div>
+                    </div>
                     <!-- I/O Scheduler Card -->
                     <div id="iosched-card" class="card tweak-card">
                         <div class="card-header">
@@ -553,7 +562,18 @@
                                 <path
                                     d="M12 3C7.58 3 4 4.79 4 7v10c0 2.21 3.58 4 8 4s8-1.79 8-4V7c0-2.21-3.58-4-8-4zm0 2c3.87 0 6 1.5 6 2s-2.13 2-6 2-6-1.5-6-2 2.13-2 6-2zm6 12c0 .5-2.13 2-6 2s-6-1.5-6-2v-2.23c1.61.78 3.72 1.23 6 1.23s4.39-.45 6-1.23V17zm0-5c0 .5-2.13 2-6 2s-6-1.5-6-2V9.77c1.61.78 3.72 1.23 6 1.23s4.39-.45 6-1.23V12z" />
                             </svg>
-                            <span class="card-title" data-i18n="tweaks.iosched.title">I/O Scheduler</span>
+                            <span class="card-title" data-i18n="tweaks.iosched.ioScheduler">I/O Scheduler</span>
+                            <div class="status-icon-wrapper"
+                                style="position:relative; display:inline-block; vertical-align:middle; margin-left:8px;">
+                                <svg class="status-icon info" onclick="toggleBubble('bubble-tweak-iosched', event)"
+                                    viewBox="0 0 24 24"
+                                    style="width:18px;height:18px;cursor:pointer;color:var(--md-sys-color-primary);">
+                                    <path fill="currentColor"
+                                        d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+                                </svg>
+                                <div id="bubble-tweak-iosched" class="status-bubble center hidden"
+                                    data-i18n="tweaks.tooltip.ioScheduler"></div>
+                            </div>
                             <span id="iosched-pending-indicator" class="pending-indicator hidden"
                                 data-i18n="tweaks.unsaved">Unsaved</span>
                         </div>

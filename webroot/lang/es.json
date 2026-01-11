@@ -73,7 +73,13 @@
             "watermarkScale": "Escala de watermark"
         },
         "iosched": {
-            "title": "Scheduler de E/S"
+            "title": "Scheduler de E/S",
+            "ioScheduler": "Planificador E/S"
+        },
+        "tooltip": {
+            "zram": "Dispositivo de bloque de RAM comprimida. Ayuda a la multitarea comprimiendo datos en la RAM. Generalmente, un mayor tamaño significa que caben más apps en ZRAM.",
+            "memory": "Ajustes para controlar el subsistema de Memoria Virtual (VM) de Linux. Ajusta cómo el kernel equilibra rendimiento, batería y multitarea.",
+            "ioScheduler": "Algoritmo usado para ordenar y fusionar peticiones de E/S. Afecta el rendimiento y latencia del almacenamiento."
         }
     },
     "about": {
