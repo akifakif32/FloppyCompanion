@@ -19,7 +19,12 @@
         "saveDmesg": "Save dmesg",
         "lastKmsgDesc": "last_kmsg contains a dmesg + bootloader log of the last time your device was rebooted (intentionally or through a crash). It's useful for diagnosing kernel panics and crashes.",
         "dmesgDesc": "dmesg shows the current kernel ring buffer (logs). This is useful for diagnosing issues that occurred after boot.",
-        "tooltipUnsupported": "This kernel version is too old and may not be fully compatible with this module. Please update your kernel."
+        "tooltipUnsupported": "This kernel version is too old and may not be fully compatible with this module. Please update your kernel.",
+        "rebootSystem": "Reboot System",
+        "rebootRecovery": "Reboot to Recovery",
+        "rebootFastboot": "Reboot to Fastboot",
+        "rebootDownload": "Reboot to Download",
+        "rebootBootloader": "Reboot to Bootloader"
     },
     "features": {
         "title": "Features",

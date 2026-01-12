@@ -357,6 +357,11 @@ body {
     right: 0;
 }
 
+/* Ensure dropdown menus position relative to their container, not header-actions */
+.header-actions .dropdown-container {
+    position: absolute;
+}
+
 .icon-button {
     background: none;
     border: none;

@@ -19,7 +19,12 @@
         "saveDmesg": "Guardar dmesg",
         "lastKmsgDesc": "last_kmsg contiene un dmesg + registro del bootloader de la última vez que tu dispositivo fue reiniciado (intencionalmente o por un fallo). Es útil para diagnosticar kernel panics y crasheos.",
         "dmesgDesc": "dmesg muestra el buffer de anillo (registros) actual del kernel. Es útil para diagnosticar problemas que ocurrieron después del arranque.",
-        "tooltipUnsupported": "Esta versión del kernel es muy antigua y puede no ser totalmente compatible con este módulo. Por favor, actualiza tu kernel."
+        "tooltipUnsupported": "Esta versión del kernel es muy antigua y puede no ser totalmente compatible con este módulo. Por favor, actualiza tu kernel.",
+        "rebootSystem": "Reiniciar Sistema",
+        "rebootRecovery": "Reiniciar a Recovery",
+        "rebootFastboot": "Reiniciar a Fastboot",
+        "rebootDownload": "Reiniciar a Download",
+        "rebootBootloader": "Reiniciar a Bootloader"
     },
     "features": {
         "title": "Características",
