@@ -81,6 +81,15 @@ if [ -f "$MODDIR/tweaks/iosched.sh" ]; then
 fi
 )
     },
+    "thermal": {
+      "mode": "$(cat /sys/devices/platform/10080000.BIG/thermal_mode 2>/dev/null || echo 1)",
+      "custom_freq": "$(cat /sys/devices/platform/10080000.BIG/emergency_frequency 2>/dev/null || echo 2288000)"
+    },
+    "undervolt": {
+      "little": "$(cat /sys/kernel/exynos_uv/cpucl0_uv_percent 2>/dev/null || echo 0)",
+      "big": "$(cat /sys/kernel/exynos_uv/cpucl1_uv_percent 2>/dev/null || echo 0)",
+      "gpu": "$(cat /sys/kernel/exynos_uv/gpu_uv_percent 2>/dev/null || echo 0)"
+    },
     "misc": {
       "block_ed3": "$(cat /sys/devices/virtual/sec/tsp/block_ed3 2>/dev/null || echo 0)",
       "gpu_clklck": "$(cat /sys/kernel/gpu/gpu_clklck 2>/dev/null || echo 0)",
