@@ -1042,12 +1042,7 @@ async function applyThermal() {
     const customFreq = thermalPendingState.custom_freq || '';
 
     await runThermalBackend('apply', mode, customFreq);
-
-    // Refresh current state
-    const currentOutput = await runThermalBackend('get_current');
-    thermalCurrentState = parseKeyValue(currentOutput);
-
-    renderThermalCard();
+    await loadThermalState(); // Refresh from backend
     showToast(window.t ? window.t('toast.settingsApplied') : 'Settings applied');
 }
 
@@ -1228,23 +1223,9 @@ async function saveMisc() {
 async function applyMisc() {
     await runMiscBackend('apply', 'block_ed3', miscPendingState.block_ed3);
     await runMiscBackend('apply', 'gpu_clklck', miscPendingState.gpu_clklck);
+    await runMiscBackend('apply', 'gpu_unlock', miscPendingState.gpu_unlock);
 
-    // GPU Unlock needs special handling - check if it stuck
-    const result = await runMiscBackend('apply', 'gpu_unlock', miscPendingState.gpu_unlock);
-    const match = result.match(/applied=(\d)/);
-    if (match) {
-        miscCurrentState.gpu_unlock = match[1];
-        if (match[1] !== miscPendingState.gpu_unlock) {
-            // Reset pending to match actual
-            miscPendingState.gpu_unlock = match[1];
-        }
-    }
-
-    // Update current state
-    miscCurrentState.block_ed3 = miscPendingState.block_ed3;
-    miscCurrentState.gpu_clklck = miscPendingState.gpu_clklck;
-
-    renderMiscCard();
+    await loadMiscState(); // Refresh from backend
     showToast(window.t ? window.t('toast.settingsApplied') : 'Applied');
 }
 
@@ -1436,8 +1417,7 @@ async function saveSoundControl() {
 
 async function applySoundControl() {
     await runSoundControlBackend('apply', scPendingState.hp_l, scPendingState.hp_r, scPendingState.mic);
-    scCurrentState = { ...scPendingState };
-    renderSoundControlCard();
+    await loadSoundControlState(); // Refresh from backend
     showToast(window.t ? window.t('toast.settingsApplied') : 'Applied');
 }
 
@@ -1663,12 +1643,16 @@ function renderUndervoltCard() {
 
         if (!sliderEl || !inputEl) return;
 
-        const val = undervoltPendingState[el] || '0';
+        const valPending = undervoltPendingState[el] || '0';
+        const valCurrent = undervoltCurrentState[el] || '0';
 
-        // Update display values
-        if (valEl) valEl.textContent = val + '%';
-        sliderEl.value = val;
-        inputEl.value = val;
+        // Update display values (label shows current kernel state)
+        if (valEl) valEl.textContent = valCurrent + '%';
+
+        // Slider shows pending/slider state
+        sliderEl.value = valPending;
+        if (inputEl) inputEl.value = valPending;
+
 
         // Update max range based on lock switch
         const isUnlocked = document.getElementById('undervolt-unlock-switch').checked;
