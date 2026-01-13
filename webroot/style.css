@@ -610,6 +610,22 @@ body {
     /* Clip ripple to border radius */
 }
 
+.nav-item:disabled,
+.nav-item.disabled {
+    cursor: default;
+    opacity: 0.45;
+}
+
+.nav-item:disabled::before,
+.nav-item.disabled::before {
+    display: none;
+}
+
+.nav-item:disabled .icon,
+.nav-item.disabled .icon {
+    background-color: transparent;
+}
+
 /* Custom Ripple/Highlight Effect */
 .nav-item::before {
     content: '';

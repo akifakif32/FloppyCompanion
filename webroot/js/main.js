@@ -170,6 +170,16 @@ async function init() {
     // 1. Initialize UI Navigation
     initNavigation();
 
+    // Disable Features until detection completes.
+    window.FEATURES_SUPPORTED = false;
+    window.setFeaturesSupported = function (supported) {
+        window.FEATURES_SUPPORTED = !!supported;
+        if (typeof window.setTabEnabled === 'function') {
+            window.setTabEnabled(1, window.FEATURES_SUPPORTED);
+        }
+    };
+    window.setFeaturesSupported(false);
+
     // Elements
     const statusCard = document.getElementById('status-card');
     const errorCard = document.getElementById('error-card');
@@ -279,6 +289,7 @@ async function init() {
         if (statusCard) statusCard.classList.add('hidden');
         if (errorCard) errorCard.classList.remove('hidden');
         swapManagedDeviceName(unknownText(), { i18nKey: 'unknown' });
+        window.setFeaturesSupported(false);
         return;
     }
 
@@ -317,6 +328,11 @@ async function init() {
         swapManagedDeviceName(unknownText(), { i18nKey: 'unknown' });
         window.KERNEL_NAME = 'FloppyKernel';
     }
+
+    // Features gate (future platforms can set devInfo.featuresSupported = false).
+    const detectedKnownPlatform = !!(devInfo.isTrinketMi || devInfo.is1280);
+    const featuresSupported = detectedKnownPlatform && devInfo.featuresSupported !== false;
+    window.setFeaturesSupported(featuresSupported);
 
     // Initialize Platform Tweaks now that KERNEL_NAME is set
     if (window.initPlatformTweaks) {

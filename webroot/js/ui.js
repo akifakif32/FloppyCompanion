@@ -3,8 +3,52 @@
 const TAB_COUNT = 4; // Status, Features, Tweaks, About
 let currentIndex = 0;
 
+// Track whether a tab can be opened.
+const tabEnabled = new Array(TAB_COUNT).fill(true);
+
+function isTabEnabled(index) {
+    return tabEnabled[index] !== false;
+}
+
+function coerceToEnabledIndex(targetIndex) {
+    if (!isTabEnabled(targetIndex)) {
+        if (isTabEnabled(currentIndex)) return currentIndex;
+
+        for (let radius = 1; radius < TAB_COUNT; radius++) {
+            const left = targetIndex - radius;
+            const right = targetIndex + radius;
+            if (left >= 0 && isTabEnabled(left)) return left;
+            if (right < TAB_COUNT && isTabEnabled(right)) return right;
+        }
+        return 0;
+    }
+    return targetIndex;
+}
+
+// External API to enable/disable tabs.
+window.setTabEnabled = function (index, enabled) {
+    const idx = Number(index);
+    if (!Number.isFinite(idx) || idx < 0 || idx >= TAB_COUNT) return;
+
+    tabEnabled[idx] = !!enabled;
+
+    const navItems = document.querySelectorAll('.nav-item');
+    const nav = navItems[idx];
+    if (nav) {
+        nav.disabled = !tabEnabled[idx];
+        nav.classList.toggle('disabled', !tabEnabled[idx]);
+        nav.setAttribute('aria-disabled', (!tabEnabled[idx]).toString());
+    }
+
+    // If we just disabled the current tab, move somewhere safe.
+    if (!tabEnabled[idx] && currentIndex === idx) {
+        updateSlide(0);
+    }
+};
+
 function updateSlide(index) {
-    currentIndex = index;
+    const nextIndex = coerceToEnabledIndex(index);
+    currentIndex = nextIndex;
 
     // --- Theme Toggle Visibility ---
     const themeBtn = document.getElementById('theme-toggle');
@@ -58,16 +102,15 @@ function updateSlide(index) {
 
 
 
-    // Update Bottom Nav
+    // Bottom nav
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach((nav, i) => {
-        if (i === index) nav.classList.add('active');
+        if (i === nextIndex) nav.classList.add('active');
         else nav.classList.remove('active');
     });
 
-    // Slide Track
-    // 0 -> 0%, 1 -> -25%, 2 -> -50%, 3 -> -75%
-    const percentage = index * -25;
+    // Slide track
+    const percentage = nextIndex * -25;
     const sliderTrack = document.getElementById('slider-track');
     if (sliderTrack) {
         sliderTrack.style.transform = `translateX(${percentage}%)`;
@@ -77,11 +120,11 @@ function updateSlide(index) {
     // Status=0, Features=1, Tweaks=2, About=3
     const fabContainer = document.querySelector('.fab-container');
     if (fabContainer) {
-        fabContainer.style.display = (index === 1) ? 'flex' : 'none';
+        fabContainer.style.display = (nextIndex === 1) ? 'flex' : 'none';
     }
 
     // Auto-load features when entering Features tab (index 1)
-    if (index === 1) {
+    if (nextIndex === 1) {
         if (window.loadFeaturesIfNeeded) window.loadFeaturesIfNeeded();
     }
 }
@@ -102,6 +145,7 @@ function initNavigation() {
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach((item, index) => {
         item.addEventListener('click', () => {
+            if (!isTabEnabled(index)) return;
             updateSlide(index);
         });
     });
