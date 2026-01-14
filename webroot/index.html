@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="fc-loading">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FloppyCompanion</title>
+
+    <!-- Prevent initial "flash of unstyled/uninitialized UI" (icons/tooling/detection). -->
+    <style>
+        html {
+            background: #191c1a;
+        }
+
+        html.fc-loading body {
+            visibility: hidden;
+        }
+    </style>
+
     <link rel="stylesheet" href="style.css">
     <!-- Offline Support: Icons are inlined SVGs -->
 </head>

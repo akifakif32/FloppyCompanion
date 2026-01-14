@@ -1906,11 +1906,15 @@ function initPlatformTweaks() {
 
     // Ensure schema is loaded/rendered even if platform init runs before tweaks tab init.
     if (!window.__tweaksSchemaRendered) {
-        initTweaksSchemaUI().then(doInit).catch(doInit);
-        return;
+        return initTweaksSchemaUI().then(() => {
+            doInit();
+        }).catch(() => {
+            doInit();
+        });
     }
 
     doInit();
+    return Promise.resolve();
 }
 
 // Global: listen for Unlocked Mode changes (emitted from features.js)

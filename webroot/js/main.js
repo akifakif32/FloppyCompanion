@@ -1,6 +1,23 @@
 // main.js - Initialization and Event Wiring
 
 async function init() {
+    let uiRevealed = false;
+    const revealUI = () => {
+        if (uiRevealed) return;
+        uiRevealed = true;
+        document.documentElement.classList.remove('fc-loading');
+    };
+
+    const waitForWindowLoad = () => {
+        if (document.readyState === 'complete') return Promise.resolve();
+        return new Promise((resolve) => window.addEventListener('load', resolve, { once: true }));
+    };
+
+    const waitForNextPaint = () => new Promise((resolve) => requestAnimationFrame(() => resolve()));
+
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    try {
     // --- Initialize i18n ---
     if (window.I18N) {
         await I18N.init();
@@ -268,6 +285,21 @@ async function init() {
         deviceEl.textContent = unknownText();
     }
 
+    // Reveal only once assets are loaded, but BEFORE detection completes,
+    // so users can see the Detecting… chip and the subsequent transition.
+    await waitForWindowLoad();
+    if (document.fonts && document.fonts.ready) {
+        try {
+            await document.fonts.ready;
+        } catch {
+            // ignore
+        }
+    }
+    await waitForNextPaint();
+    await waitForNextPaint();
+    revealUI();
+    const revealedAt = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+
     const device = await getDevice();
     const props = await getModuleProps();
     // Pass detected uname directly to resolveDeviceInfo
@@ -306,6 +338,14 @@ async function init() {
         }
     }
 
+    // Ensure the Detecting… state is visible briefly, even on fast devices.
+    const nowTs = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+    const minDetectingMs = 350;
+    const elapsed = nowTs - revealedAt;
+    if (elapsed < minDetectingMs) {
+        await sleep(minDetectingMs - elapsed);
+    }
+
     // Theme & Device Name Chip
     const shouldAnimateDetectionTheme = devInfo.isTrinketMi || devInfo.is1280;
     if (shouldAnimateDetectionTheme) {
@@ -333,7 +373,10 @@ async function init() {
 
     // Initialize Platform Tweaks now that KERNEL_NAME is set
     if (window.initPlatformTweaks) {
-        window.initPlatformTweaks();
+        const maybePromise = window.initPlatformTweaks();
+        if (maybePromise && typeof maybePromise.then === 'function') {
+            await maybePromise;
+        }
     }
 
     // Platform-specific reboot options
@@ -639,6 +682,12 @@ async function init() {
         } catch (e) {
             console.error('Failed to load credits:', e);
         }
+    }
+    } catch (e) {
+        console.error('Init failed:', e);
+        // Never leave the UI blank on unexpected errors.
+        revealUI();
+        throw e;
     }
 }
 
