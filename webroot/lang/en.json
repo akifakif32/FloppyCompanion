@@ -133,12 +133,28 @@
             "enabled": "Enabled",
             "disabled": "Disabled"
         },
+        "display": {
+            "title": "Display",
+            "hbm": "HBM",
+            "cabc": "CABC",
+            "currentHbm": "Active HBM",
+            "currentCabc": "Active CABC",
+            "hbmDisabled": "Disabled",
+            "hbmLow": "Low",
+            "hbmMedium": "Medium",
+            "hbmHigh": "High",
+            "cabcDisabled": "Disabled",
+            "cabcLow": "Low (UI)",
+            "cabcMedium": "Medium (Videos)",
+            "cabcHigh": "High (Images)"
+        },
         "platformTweaks": "Platform Tweaks",
         "dismiss": "Dismiss",
         "tooltip": {
             "zram": "Compressed RAM block device. Helps multitasking by compressing data in RAM. Usually, higher size translates to more apps fitting in ZRAM.",
             "memory": "Settings to control the Linux Virtual Memory (VM) subsystem. Adjusts how the kernel balances performance, battery life, and multitasking.",
             "gpu": "Sets the maximum GPU frequency. Higher values improve performance but use more battery.",
+            "display": "HBM boosts max brightness under sunlight. CABC adjusts backlight based on content to save power.",
             "ioScheduler": "Algorithm used to order and merge I/O requests. Affects storage performance and latency.",
             "thermal": "Controls Big cluster CPU throttling. Mode 3 is aggressive performance, Mode 1 is stock-like, Mode 0 disables throttling (dangerous!).",
             "undervolt": "Reduces voltage to save power and reduce heat. Not recommended with Overclocking (Unlocked Mode).",

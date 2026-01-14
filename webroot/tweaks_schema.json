@@ -6,7 +6,10 @@
       "titleKey": "tweaks.platformTweaks",
       "requires": {
         "var": "kernelName",
-        "in": ["Floppy1280", "FloppyTrinketMi"]
+        "in": [
+          "Floppy1280",
+          "FloppyTrinketMi"
+        ]
       },
       "tweaks": [
         {
@@ -18,7 +21,10 @@
           "iconKey": "thermal",
           "titleKey": "tweaks.thermal.title",
           "tooltipKey": "tweaks.tooltip.thermal",
-          "requires": { "var": "kernelName", "eq": "Floppy1280" }
+          "requires": {
+            "var": "kernelName",
+            "eq": "Floppy1280"
+          }
         },
         {
           "id": "undervolt",
@@ -29,7 +35,10 @@
           "iconKey": "undervolt",
           "titleKey": "tweaks.undervolt.title",
           "tooltipKey": "tweaks.tooltip.undervolt",
-          "requires": { "var": "kernelName", "eq": "Floppy1280" }
+          "requires": {
+            "var": "kernelName",
+            "eq": "Floppy1280"
+          }
         },
         {
           "id": "misc",
@@ -46,10 +55,16 @@
               "selector": "#misc-gpuunlock-switch",
               "mode": "disable",
               "dimClosest": ".tweak-switch-container",
-              "requires": { "var": "isUnlockedOcMode", "truthy": true }
+              "requires": {
+                "var": "isUnlockedOcMode",
+                "truthy": true
+              }
             }
           ],
-          "requires": { "var": "kernelName", "eq": "Floppy1280" }
+          "requires": {
+            "var": "kernelName",
+            "eq": "Floppy1280"
+          }
         },
         {
           "id": "soundcontrol",
@@ -60,7 +75,10 @@
           "iconKey": "soundcontrol",
           "titleKey": "tweaks.soundcontrol.title",
           "tooltipKey": "tweaks.tooltip.soundcontrol",
-          "requires": { "var": "kernelName", "eq": "FloppyTrinketMi" }
+          "requires": {
+            "var": "kernelName",
+            "eq": "FloppyTrinketMi"
+          }
         },
         {
           "id": "bypass_charging",
@@ -71,7 +89,24 @@
           "iconKey": "battery_android_share",
           "titleKey": "tweaks.bypassCharging.title",
           "tooltipKey": "tweaks.tooltip.bypassCharging",
-          "requires": { "var": "kernelName", "eq": "FloppyTrinketMi" }
+          "requires": {
+            "var": "kernelName",
+            "eq": "FloppyTrinketMi"
+          }
+        },
+        {
+          "id": "display",
+          "cardId": "display-card",
+          "pendingId": "display-pending-indicator",
+          "type": "custom",
+          "templateId": "tpl-display",
+          "iconKey": "backlight_low",
+          "titleKey": "tweaks.display.title",
+          "tooltipKey": "tweaks.tooltip.display",
+          "requires": {
+            "var": "kernelName",
+            "eq": "FloppyTrinketMi"
+          }
         }
       ]
     },

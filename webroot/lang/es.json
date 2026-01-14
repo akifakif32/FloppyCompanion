@@ -98,7 +98,22 @@
             "desc0Warn": "¡PELIGROSO!",
             "desc1": "Throttling stock. Frecuencias: 2288 → 2132 → 2002 MHz. Es el modo por defecto.",
             "desc2": "Frecuencia de throttle personalizada. Establece tu propio límite en KHz.",
-            "desc3": "Throttling menos agresivo. Frecuencias: 2400 → 2288 → 2208 MHz. Calienta más."
+            "desc3": "Throttling menos agresivo. Frecuencias: 2400 → 2288 → 2208 MHz. Corre más caliente."
+        },
+        "display": {
+            "title": "Pantalla",
+            "hbm": "HBM",
+            "cabc": "CABC",
+            "currentHbm": "HBM Activo",
+            "currentCabc": "CABC Activo",
+            "hbmDisabled": "Desactivado",
+            "hbmLow": "Bajo",
+            "hbmMedium": "Medio",
+            "hbmHigh": "Alto",
+            "cabcDisabled": "Desactivado",
+            "cabcLow": "Bajo (UI)",
+            "cabcMedium": "Medio (Videos)",
+            "cabcHigh": "Alto (Imágenes)"
         },
         "undervolt": {
             "title": "Undervolt",
@@ -132,7 +147,8 @@
         "tooltip": {
             "zram": "Dispositivo de bloque de RAM comprimida. Ayuda a la multitarea comprimiendo datos en la RAM. Generalmente, un mayor tamaño significa que caben más apps en ZRAM.",
             "memory": "Ajustes para controlar el subsistema de Memoria Virtual (VM) de Linux. Ajusta cómo el kernel equilibra rendimiento, batería y multitarea.",
-            "gpu": "Establece la frecuencia máxima de la GPU. Valores más altos mejoran el rendimiento pero consumen más batería.",
+            "gpu": "Ajusta la frecuencia máxima de GPU. Valores más altos mejoran rendimiento pero consumen más batería.",
+            "display": "HBM aumenta el brillo máximo bajo el sol. CABC ajusta la luz de fondo según el contenido para ahorrar energía.",
             "ioScheduler": "Algoritmo usado para ordenar y fusionar peticiones de E/S. Afecta el rendimiento y latencia del almacenamiento.",
             "thermal": "Controla el throttling de la CPU del clúster Big. Modo 3 es rendimiento agresivo, Modo 1 es tipo stock, Modo 0 desactiva el throttling (¡peligroso!).",
             "undervolt": "Reduce el voltaje para ahorrar energía y calor. No recomendado con Overclocking (Modo Unlocked).",
