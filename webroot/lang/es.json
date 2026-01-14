@@ -100,6 +100,13 @@
             "desc2": "Frecuencia de throttle personalizada. Establece tu propio límite en KHz.",
             "desc3": "Throttling menos agresivo. Frecuencias: 2400 → 2288 → 2208 MHz. Corre más caliente."
         },
+        "charging": {
+            "title": "Carga",
+            "bypass": "Ignorar Carga (Bypass)",
+            "fast": "Forzar Carga Rápida USB",
+            "enabled": "Activado",
+            "disabled": "Desactivado"
+        },
         "display": {
             "title": "Pantalla",
             "hbm": "HBM",
@@ -148,6 +155,9 @@
             "zram": "Dispositivo de bloque de RAM comprimida. Ayuda a la multitarea comprimiendo datos en la RAM. Generalmente, un mayor tamaño significa que caben más apps en ZRAM.",
             "memory": "Ajustes para controlar el subsistema de Memoria Virtual (VM) de Linux. Ajusta cómo el kernel equilibra rendimiento, batería y multitarea.",
             "gpu": "Ajusta la frecuencia máxima de GPU. Valores más altos mejoran rendimiento pero consumen más batería.",
+            "charging": "Configura el comportamiento de carga avanzado.",
+            "chargingBypass": "Detiene la carga de la batería y alimenta el dispositivo directamente por USB. Útil para juegos.",
+            "chargingFast": "Fuerza hasta 900mA de corriente de carga en conexiones USB estándar (ej. PC).",
             "display": "HBM aumenta el brillo máximo bajo el sol. CABC ajusta la luz de fondo según el contenido para ahorrar energía.",
             "ioScheduler": "Algoritmo usado para ordenar y fusionar peticiones de E/S. Afecta el rendimiento y latencia del almacenamiento.",
             "thermal": "Controla el throttling de la CPU del clúster Big. Modo 3 es rendimiento agresivo, Modo 1 es tipo stock, Modo 0 desactiva el throttling (¡peligroso!).",

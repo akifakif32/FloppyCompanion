@@ -81,14 +81,14 @@
           }
         },
         {
-          "id": "bypass_charging",
-          "cardId": "bypass-charging-card",
-          "pendingId": "bypass-charging-pending-indicator",
+          "id": "charging",
+          "cardId": "charging-card",
+          "pendingId": "charging-pending-indicator",
           "type": "custom",
-          "templateId": "tpl-bypass-charging",
-          "iconKey": "battery_android_share",
-          "titleKey": "tweaks.bypassCharging.title",
-          "tooltipKey": "tweaks.tooltip.bypassCharging",
+          "templateId": "tpl-charging",
+          "iconKey": "battery_android_frame_bolt",
+          "titleKey": "tweaks.charging.title",
+          "tooltipKey": "tweaks.tooltip.charging",
           "requires": {
             "var": "kernelName",
             "eq": "FloppyTrinketMi"

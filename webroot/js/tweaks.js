@@ -1877,103 +1877,110 @@ function initSoundControlTweak() {
     });
 }
 
-// --- Bypass Charging Tweak Logic (FloppyTrinketMi only) ---
+// --- Charging Tweak Logic (FloppyTrinketMi only) ---
 
-const BYPASS_CHARGING_ENABLED = '2';
-const BYPASS_CHARGING_DISABLED = '0';
+let chargingCurrentState = { bypass: '0', fast: '0' };
+let chargingSavedState = { bypass: '0', fast: '0' };
+let chargingPendingState = { bypass: '0', fast: '0' };
 
-let bypassChargingCurrentState = BYPASS_CHARGING_DISABLED;
-let bypassChargingSavedState = BYPASS_CHARGING_DISABLED;
-let bypassChargingPendingState = BYPASS_CHARGING_DISABLED;
-
-async function runBypassChargingBackend(action, ...args) {
-    const cmd = `sh ${DATA_DIR}/tweaks/bypass_charging.sh ${action} ${args.join(' ')}`;
+async function runChargingBackend(action, ...args) {
+    const cmd = `sh ${DATA_DIR}/tweaks/charging.sh ${action} ${args.join(' ')}`;
     try {
         const result = await exec(cmd);
         return result.trim();
     } catch (error) {
-        console.error(`Bypass Charging backend error (${action}):`, error);
+        console.error(`Charging backend error (${action}):`, error);
         return '';
     }
 }
 
-function getBypassChargingText(enabled) {
-    if (enabled) return window.t ? window.t('tweaks.bypassCharging.enabled') : 'Enabled';
-    return window.t ? window.t('tweaks.bypassCharging.disabled') : 'Disabled';
+function renderChargingCard() {
+    const valBypass = document.getElementById('charging-val-bypass');
+    const toggleBypass = document.getElementById('charging-bypass-switch');
+
+    // Use generic enabled/disabled or specific keys
+    const txtEnabled = window.t ? window.t('tweaks.charging.enabled') : 'Enabled';
+    const txtDisabled = window.t ? window.t('tweaks.charging.disabled') : 'Disabled';
+
+    if (valBypass) valBypass.textContent = (chargingCurrentState.bypass === '1') ? txtEnabled : txtDisabled;
+    if (toggleBypass) toggleBypass.checked = chargingPendingState.bypass === '1';
+
+    const valFast = document.getElementById('charging-val-fast');
+    const toggleFast = document.getElementById('charging-fast-switch');
+
+    if (valFast) valFast.textContent = (chargingCurrentState.fast === '1') ? txtEnabled : txtDisabled;
+    if (toggleFast) toggleFast.checked = chargingPendingState.fast === '1';
+
+    updateChargingPendingIndicator();
 }
 
-function renderBypassChargingCard() {
-    const valEl = document.getElementById('bypass-charging-val');
-    const toggle = document.getElementById('bypass-charging-switch');
-    const isEnabled = bypassChargingCurrentState === BYPASS_CHARGING_ENABLED;
-
-    if (valEl) valEl.textContent = getBypassChargingText(isEnabled);
-    if (toggle) toggle.checked = bypassChargingPendingState === BYPASS_CHARGING_ENABLED;
-    updateBypassChargingPendingIndicator();
-}
-
-async function readBypassChargingState() {
-    const out = await runBypassChargingBackend('get_current');
-    const parsed = parseKeyValue(out);
-    return parsed.enabled || '';
-}
-
-function updateBypassChargingPendingIndicator() {
-    const indicator = document.getElementById('bypass-charging-pending-indicator');
+function updateChargingPendingIndicator() {
+    const indicator = document.getElementById('charging-pending-indicator');
     if (!indicator) return;
 
-    const hasChanges = bypassChargingPendingState !== bypassChargingSavedState;
+    const hasChanges =
+        chargingPendingState.bypass !== chargingSavedState.bypass ||
+        chargingPendingState.fast !== chargingSavedState.fast;
+
     indicator.classList.toggle('hidden', !hasChanges);
 }
 
-async function loadBypassChargingState() {
-    const currentOutput = await runBypassChargingBackend('get_current');
+async function loadChargingState() {
+    const currentOutput = await runChargingBackend('get_current');
     const current = parseKeyValue(currentOutput);
-    bypassChargingCurrentState = current.enabled || BYPASS_CHARGING_DISABLED;
+    chargingCurrentState = {
+        bypass: current.bypass || '0',
+        fast: current.fast || '0'
+    };
 
-    const savedOutput = await runBypassChargingBackend('get_saved');
+    const savedOutput = await runChargingBackend('get_saved');
     const saved = parseKeyValue(savedOutput);
-    bypassChargingSavedState = saved.enabled || bypassChargingCurrentState || BYPASS_CHARGING_DISABLED;
+    chargingSavedState = {
+        bypass: saved.bypass || chargingCurrentState.bypass || '0',
+        fast: saved.fast || chargingCurrentState.fast || '0'
+    };
 
-    bypassChargingPendingState = bypassChargingSavedState;
-    renderBypassChargingCard();
+    chargingPendingState = { ...chargingSavedState };
+    renderChargingCard();
 }
 
-async function saveBypassCharging() {
-    await runBypassChargingBackend('save', bypassChargingPendingState);
-    bypassChargingSavedState = bypassChargingPendingState;
-    updateBypassChargingPendingIndicator();
-    showToast(window.t ? window.t('toast.settingsSaved') : 'Saved');
+async function saveCharging() {
+    await runChargingBackend('save', chargingPendingState.bypass, chargingPendingState.fast);
+    chargingSavedState = { ...chargingPendingState };
+    updateChargingPendingIndicator();
+    showToast(window.t ? window.t('toast.settingsSaved') : 'Settings saved');
 }
 
-async function applyBypassCharging() {
-    await runBypassChargingBackend('apply', bypassChargingPendingState);
+async function applyCharging() {
+    await runChargingBackend('apply', chargingPendingState.bypass, chargingPendingState.fast);
 
-    const currentOutput = await runBypassChargingBackend('get_current');
+    const currentOutput = await runChargingBackend('get_current');
     if (!currentOutput) {
         showToast(window.t ? window.t('toast.settingsFailed') : 'Failed to apply settings', true);
         return;
     }
 
     const current = parseKeyValue(currentOutput);
-    bypassChargingCurrentState = current.enabled || BYPASS_CHARGING_DISABLED;
-    renderBypassChargingCard();
-    showToast(window.t ? window.t('toast.settingsApplied') : 'Applied');
+    chargingCurrentState = {
+        bypass: current.bypass || '0',
+        fast: current.fast || '0'
+    };
+
+    renderChargingCard();
+    showToast(window.t ? window.t('toast.settingsApplied') : 'Settings applied');
 }
 
-async function initBypassChargingTweak() {
-    const card = document.getElementById('bypass-charging-card');
+async function initChargingTweak() {
+    const card = document.getElementById('charging-card');
     if (!card) return;
 
-    // Only show on FloppyTrinketMi
     if (window.KERNEL_NAME !== 'FloppyTrinketMi') {
         card.classList.add('hidden');
         return;
     }
 
-    // Check availability via backend
-    const availability = await runBypassChargingBackend('is_available');
-    const available = parseKeyValue(availability).available === '1';
+    const availOutput = await runChargingBackend('is_available');
+    const available = parseKeyValue(availOutput).available === '1';
     if (!available) {
         card.classList.add('hidden');
         return;
@@ -1981,22 +1988,34 @@ async function initBypassChargingTweak() {
 
     card.classList.remove('hidden');
 
-    await loadBypassChargingState();
-
-    const toggle = document.getElementById('bypass-charging-switch');
-    if (toggle) {
-        toggle.addEventListener('change', (e) => {
-            bypassChargingPendingState = e.target.checked ? BYPASS_CHARGING_ENABLED : BYPASS_CHARGING_DISABLED;
-            updateBypassChargingPendingIndicator();
+    const toggleBypass = document.getElementById('charging-bypass-switch');
+    if (toggleBypass) {
+        toggleBypass.addEventListener('change', (e) => {
+            chargingPendingState.bypass = e.target.checked ? '1' : '0';
+            updateChargingPendingIndicator();
         });
     }
 
-    document.getElementById('bypass-charging-btn-save')?.addEventListener('click', saveBypassCharging);
-    document.getElementById('bypass-charging-btn-apply')?.addEventListener('click', applyBypassCharging);
-    document.getElementById('bypass-charging-btn-save-apply')?.addEventListener('click', async () => {
-        await saveBypassCharging();
-        await applyBypassCharging();
+    const toggleFast = document.getElementById('charging-fast-switch');
+    if (toggleFast) {
+        toggleFast.addEventListener('change', (e) => {
+            chargingPendingState.fast = e.target.checked ? '1' : '0';
+            updateChargingPendingIndicator();
+        });
+    }
+
+    document.getElementById('charging-btn-save')?.addEventListener('click', saveCharging);
+    document.getElementById('charging-btn-apply')?.addEventListener('click', applyCharging);
+    document.getElementById('charging-btn-save-apply')?.addEventListener('click', async () => {
+        await saveCharging();
+        await applyCharging();
     });
+
+    document.addEventListener('languageChanged', () => {
+        renderChargingCard();
+    });
+
+    loadChargingState();
 }
 
 // --- Display Tweak Logic (FloppyTrinketMi only) ---
@@ -2198,7 +2217,7 @@ function initPlatformTweaks() {
         initThermalTweak();
         initUndervoltTweak();
         initMiscTweak();
-        initBypassChargingTweak();
+        initChargingTweak();
         initDisplayTweak();
         initSoundControlTweak();
     };

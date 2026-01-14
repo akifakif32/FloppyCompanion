@@ -126,10 +126,10 @@
             "headphoneR": "Headphone R",
             "mic": "Microphone Gain"
         },
-        "bypassCharging": {
-            "title": "Bypass Charging",
-            "label": "Bypass Charging",
-            "desc": "Attempts to power the phone directly from the charger instead of charging the battery.",
+        "charging": {
+            "title": "Charging",
+            "bypass": "Bypass Charging",
+            "fast": "Force USB Fast Charge",
             "enabled": "Enabled",
             "disabled": "Disabled"
         },
@@ -162,7 +162,9 @@
             "gpuClkLock": "When enabled, prevents the GPU min/max frequencies from being changed. Useful for locking GPU clocks to a specific range.",
             "gpuUnlock": "Enables GPU overclocking immediately. Only works in Superfloppy overclock modes (1, 2, 3). Greyed out if Unlocked Mode is disabled or in non-OC modes.",
             "soundcontrol": "Adjust headphone and microphone gain in decibels. Higher values increase volume. Use Split L/R to control left and right channels independently.",
-            "bypassCharging": "Attempts to bypass battery charging by suspending input charge and powering the device directly. Experimental."
+            "charging": "Configure advanced charging behavior.",
+            "chargingBypass": "Stops battery charging while allowing device to run from USB power. Useful for gaming to reduce heat.",
+            "chargingFast": "Forces up to 900mA charging current over standard USB connections (e.g. PC ports)."
         }
     },
     "about": {
