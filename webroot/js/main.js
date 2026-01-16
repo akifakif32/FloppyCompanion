@@ -32,7 +32,34 @@ async function init() {
     const langBtn = document.getElementById('lang-btn');
     const langMenu = document.getElementById('lang-menu');
 
+    // Populate language dropdown dynamically
+    function populateLanguageMenu() {
+        if (!langMenu || !window.I18N) return;
+
+        langMenu.innerHTML = '';
+        I18N.availableLanguages.forEach(lang => {
+            const item = document.createElement('div');
+            item.className = 'dropdown-item';
+            item.dataset.lang = lang.code;
+            item.textContent = lang.name;
+            langMenu.appendChild(item);
+        });
+    }
+
     if (langBtn && langMenu) {
+        // Populate menu after I18N is initialized
+        if (window.I18N) {
+            populateLanguageMenu();
+        } else {
+            // Wait for I18N to be available
+            const checkI18N = setInterval(() => {
+                if (window.I18N) {
+                    populateLanguageMenu();
+                    clearInterval(checkI18N);
+                }
+            }, 50);
+        }
+
         langBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             const isVisible = langMenu.classList.contains('visible');
@@ -52,16 +79,18 @@ async function init() {
             }
         });
 
-        langMenu.querySelectorAll('.dropdown-item').forEach(item => {
-            item.addEventListener('click', async (e) => {
-                e.stopPropagation();
-                const lang = item.dataset.lang;
-                if (lang && window.I18N) {
-                    await I18N.setLanguage(lang);
-                }
-                langMenu.classList.remove('visible');
-                setTimeout(() => langMenu.classList.add('hidden'), 200);
-            });
+        // Use event delegation for dynamic items
+        langMenu.addEventListener('click', async (e) => {
+            const item = e.target.closest('.dropdown-item');
+            if (!item) return;
+
+            e.stopPropagation();
+            const lang = item.dataset.lang;
+            if (lang && window.I18N) {
+                await I18N.setLanguage(lang);
+            }
+            langMenu.classList.remove('visible');
+            setTimeout(() => langMenu.classList.add('hidden'), 200);
         });
     }
 
