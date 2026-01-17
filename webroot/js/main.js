@@ -423,8 +423,8 @@ async function init() {
     if (linuxVerEl) linuxVerEl.textContent = linuxVer;
 
     if (uname.includes('Floppy')) {
-        // Parse Version
-        const versionMatch = uname.match(/-v(\d+\.\d+)/);
+        // Parse Version (including suffix like "v2.0b")
+        const versionMatch = uname.match(/-v(\d+\.\d+[a-z]*)/);
         if (versionMatch && versionEl) {
             versionEl.textContent = `v${versionMatch[1]}`;
         } else if (versionEl) {
@@ -468,8 +468,12 @@ async function init() {
         // Check for unsupported version
         const versionWarning = document.getElementById('version-warning');
         if (versionWarning && versionMatch) {
-            const versionStr = versionMatch[1]; // e.g., "6.2" or "1.0"
-            const [major, minor] = versionStr.split('.').map(Number);
+            const versionStr = versionMatch[1]; // e.g., "6.2" or "2.0b"
+            const versionParts = versionStr.split('.');
+            const major = parseInt(versionParts[0], 10);
+            const minorRaw = versionParts[1] || '0';
+            const minor = parseInt(minorRaw.replace(/[^0-9]/g, ''), 10);
+            const suffix = minorRaw.replace(/[0-9]/g, '');
             let isUnsupported = false;
 
             // Parse kernel name from uname
@@ -483,10 +487,16 @@ async function init() {
                 }
             }
 
-            // FloppyTrinketMi: minimum v1.2
+            // FloppyTrinketMi: minimum v2.0b
             if (kernelName === 'FloppyTrinketMi') {
-                if (major < 1 || (major === 1 && minor < 2)) {
+                if (major < 2) {
                     isUnsupported = true;
+                } else if (major === 2 && minor === 0) {
+                    // For v2.0, require "b" suffix or no suffix
+                    if (suffix && suffix !== 'b') {
+                        isUnsupported = true;
+                    }
+                    // v2.0b and v2.0 (no suffix) are both supported
                 }
             }
 

@@ -15,8 +15,8 @@ if echo "$KERN_VER" | grep -q "Floppy"; then
     # Parse kernel name (Floppy1280, FloppyTrinketMi, etc)
     KERN_NAME=$(echo "$KERN_VER" | grep -o 'Floppy[A-Za-z0-9]*')
 
-    # Parse version
-    VERSION=$(echo "$KERN_VER" | grep -o '\-v[0-9]*\.[0-9]*' | tr -d '-')
+    # Parse version (including suffix like "v2.0b")
+    VERSION=$(echo "$KERN_VER" | grep -o '\-v[0-9]*\.[0-9]*[a-z]*' | tr -d '-')
 
     # Parse variant
     VARIANT=""
@@ -61,8 +61,12 @@ if echo "$KERN_VER" | grep -q "Floppy"; then
     UNSUPPORTED=0
     MIN_MSG=""
     if [ -n "$VERSION" ]; then
-        VER_MAJOR=$(echo "$VERSION" | sed 's/v//' | cut -d. -f1)
-        VER_MINOR=$(echo "$VERSION" | sed 's/v//' | cut -d. -f2)
+        # Parse version with potential suffix (e.g., "v2.0b" -> major=2, minor=0, suffix=b)
+        VERSION_CLEAN=$(echo "$VERSION" | sed 's/v//')
+        VER_MAJOR=$(echo "$VERSION_CLEAN" | cut -d. -f1)
+        VER_MINOR_RAW=$(echo "$VERSION_CLEAN" | cut -d. -f2)
+        VER_MINOR=$(echo "$VER_MINOR_RAW" | sed 's/[^0-9].*//')
+        VER_SUFFIX=$(echo "$VER_MINOR_RAW" | sed 's/[0-9]*//')
         
         # Floppy1280: minimum v6.2
         if [ "$KERN_NAME" = "Floppy1280" ]; then
@@ -74,14 +78,20 @@ if echo "$KERN_VER" | grep -q "Floppy"; then
             MIN_MSG="Floppy1280 versions below v6.2"
         fi
         
-        # FloppyTrinketMi: minimum v1.2
+        # FloppyTrinketMi: minimum v2.0b
         if [ "$KERN_NAME" = "FloppyTrinketMi" ]; then
-            if [ "$VER_MAJOR" -lt 1 ] 2>/dev/null; then
+            if [ "$VER_MAJOR" -lt 2 ] 2>/dev/null; then
                 UNSUPPORTED=1
-            elif [ "$VER_MAJOR" -eq 1 ] && [ "$VER_MINOR" -lt 2 ] 2>/dev/null; then
+            elif [ "$VER_MAJOR" -eq 2 ] && [ "$VER_MINOR" -eq 0 ] 2>/dev/null; then
+                # For v2.0, require "b" suffix or no suffix
+                if [ -n "$VER_SUFFIX" ] && [ "$VER_SUFFIX" != "b" ]; then
+                    UNSUPPORTED=1
+                fi
+                # v2.0b and v2.0 (no suffix) are both supported
+            elif [ "$VER_MAJOR" -eq 2 ] && [ "$VER_MINOR" -lt 0 ] 2>/dev/null; then
                 UNSUPPORTED=1
             fi
-            MIN_MSG="FloppyTrinketMi versions below v1.2"
+            MIN_MSG="FloppyTrinketMi versions below v2.0b"
         fi
     fi
     
