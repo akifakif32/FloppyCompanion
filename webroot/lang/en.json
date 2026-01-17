@@ -118,6 +118,12 @@
             "enabled": "Enabled",
             "disabled": "Disabled"
         },
+        "miscTrinket": {
+            "title": "Misc FloppyTrinket Tweaks",
+            "touchboost": "MSM Performance Touchboost",
+            "enabled": "Enabled",
+            "disabled": "Disabled"
+        },
         "soundcontrol": {
             "title": "Sound Control",
             "splitChannels": "Split L/R Channels",
@@ -183,7 +189,8 @@
             "chargingFast": "Forces up to 900mA charging current over standard USB connections (e.g. PC ports).",
             "adreno": "Tweaks specific to Adreno GPUs.",
             "adrenoboost": "A replacement boosting algorithm for Adreno GPUs that replaces the default one.",
-            "adrenoidler": "An algorithm that makes the boosting of the GPU less aggressive, making it tend to go idle more."
+            "adrenoidler": "An algorithm that makes the boosting of the GPU less aggressive, making it tend to go idle more.",
+            "touchboost": "MSM Performance Touchboost. Self-explanatory."
         }
     },
     "about": {

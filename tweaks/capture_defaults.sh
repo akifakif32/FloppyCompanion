@@ -114,6 +114,9 @@ fi
       "idler_downdifferential": "$(cat /sys/module/adreno_idler/parameters/adreno_idler_downdifferential 2>/dev/null || echo 20)",
       "idler_idlewait": "$(cat /sys/module/adreno_idler/parameters/adreno_idler_idlewait 2>/dev/null || echo 15)",
       "idler_idleworkload": "$(cat /sys/module/adreno_idler/parameters/adreno_idler_idleworkload 2>/dev/null || echo 5000)"
+    },
+    "misc_trinket": {
+      "touchboost": "$(cat /sys/module/msm_performance/parameters/touchboost 2>/dev/null || echo 0)"
     }
   }
 }

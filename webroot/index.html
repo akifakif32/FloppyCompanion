@@ -500,6 +500,40 @@
                         </div>
                     </template>
 
+                    <template id="tpl-misc-trinket">
+                        <div class="card-content">
+                            <div class="tweak-row" style="border-bottom: none;">
+                                <div class="tweak-info-col">
+                                    <span class="tweak-label">
+                                        <span data-i18n="tweaks.miscTrinket.touchboost">MSM Performance Touchboost</span>
+                                        <div class="status-icon-wrapper">
+                                            <svg class="status-icon info small"
+                                                onclick="toggleBubble('bubble-misc-trinket-touchboost', event)"
+                                                data-icon="info_outline"></svg>
+                                            <div id="bubble-misc-trinket-touchboost" class="status-bubble center hidden"
+                                                data-i18n="tweaks.tooltip.touchboost"></div>
+                                        </div>
+                                    </span>
+                                    <span class="tweak-val" id="misc-trinket-val-touchboost">--</span>
+                                </div>
+                                <div class="tweak-switch-container">
+                                    <label class="m3-switch" style="display:inline-block; margin:0;">
+                                        <input type="checkbox" id="misc-trinket-touchboost-switch">
+                                        <span class="m3-switch-track"><span class="m3-switch-thumb"></span></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="tweak-actions">
+                                <button class="tweak-action-btn secondary" id="misc-trinket-btn-save"
+                                    data-i18n="tweaks.save">Save</button>
+                                <button class="tweak-action-btn secondary" id="misc-trinket-btn-apply"
+                                    data-i18n="tweaks.apply">Apply</button>
+                                <button class="tweak-action-btn primary" id="misc-trinket-btn-save-apply"
+                                    data-i18n="tweaks.saveApply">Save & Apply</button>
+                            </div>
+                        </div>
+                    </template>
+
                     <template id="tpl-soundcontrol">
                         <div class="card-content">
                             <div class="tweak-row" style="border-bottom: none; padding-bottom: 0;">
@@ -1205,6 +1239,7 @@
     <script src="js/tweaks/floppytrinketmi/charging.js"></script>
     <script src="js/tweaks/floppytrinketmi/display.js"></script>
     <script src="js/tweaks/floppytrinketmi/adreno.js"></script>
+    <script src="js/tweaks/floppytrinketmi/misc_trinket.js"></script>
     <script src="vendor/micromod/AudioPlayer.js"></script>
     <script src="vendor/micromod/Micromod.js"></script>
     <script src="js/egg.js"></script>

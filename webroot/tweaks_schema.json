@@ -121,6 +121,20 @@
             "var": "kernelName",
             "eq": "FloppyTrinketMi"
           }
+        },
+        {
+          "id": "misc_trinket",
+          "cardId": "misc-trinket-card",
+          "pendingId": "misc-trinket-pending-indicator",
+          "type": "custom",
+          "templateId": "tpl-misc-trinket",
+          "iconKey": "misc",
+          "titleKey": "tweaks.miscTrinket.title",
+          "tooltipKey": null,
+          "requires": {
+            "var": "kernelName",
+            "eq": "FloppyTrinketMi"
+          }
         }
       ]
     },

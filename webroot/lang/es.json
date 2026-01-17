@@ -157,6 +157,12 @@
             "enabled": "Habilitado",
             "disabled": "Deshabilitado"
         },
+        "miscTrinket": {
+            "title": "Tweaks Misc FloppyTrinket",
+            "touchboost": "MSM Performance Touchboost",
+            "enabled": "Habilitado",
+            "disabled": "Deshabilitado"
+        },
         "soundcontrol": {
             "title": "Control de Sonido",
             "splitChannels": "Separar Canales L/R",
@@ -184,7 +190,8 @@
             "soundcontrol": "Ajusta la ganancia de auriculares y micrófono en decibelios. Valores más altos aumentan el volumen. Usa Separar L/R para controlar los canales izquierdo y derecho de forma independiente.",
             "adreno": "Ajustes específicos para GPUs Adreno.",
             "adrenoboost": "Un algoritmo de impulso de reemplazo para GPUs Adreno que reemplaza el predeterminado.",
-            "adrenoidler": "Un algoritmo que hace que el impulso de la GPU sea menos agresivo, haciendo que tienda a estar inactiva más a menudo."
+            "adrenoidler": "Un algoritmo que hace que el impulso de la GPU sea menos agresivo, haciendo que tienda a estar inactiva más a menudo.",
+            "touchboost": "MSM Performance Touchboost. Autoexplicativo."
         }
     },
     "about": {

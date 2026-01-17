@@ -74,6 +74,11 @@ if [ -f "$MODDIR/tweaks/adreno.sh" ]; then
     sh "$MODDIR/tweaks/adreno.sh" apply_saved
 fi
 
+# Misc Trinket Tweaks (FloppyTrinketMi only)
+if [ -f "$MODDIR/tweaks/misc_trinket.sh" ]; then
+    sh "$MODDIR/tweaks/misc_trinket.sh" apply_saved
+fi
+
 # --- Update Module Description ---
 KERN_VER=$(uname -r)
 DESCRIPTION="Companion module to tweak FloppyKernel."
