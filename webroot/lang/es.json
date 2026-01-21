@@ -148,8 +148,8 @@
         },
         "undervolt": {
             "title": "Undervolt",
-            "little": "Little Cluster",
-            "big": "Big Cluster",
+            "little": "Cluster Pequeño",
+            "big": "Cluster Grande",
             "gpu": "GPU",
             "unlockRange": "Desbloquear rango completo",
             "notice": "Los ajustes de undervolt fueron borrados porque habilitaste o cambiaste el Modo Unlocked. Esto previene crasheos por configuraciones de undervolt incompatibles.",
