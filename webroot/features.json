@@ -101,6 +101,7 @@
                     "key": "uname_bpf_spoof",
                     "title": "BPF Spoofing",
                     "type": "select",
+                    "readOnly": true,
                     "desc": "Spoof Linux version for BPF support. Managed externally; changing this manually may cause bootloops.",
                     "experimental": true,
                     "save": true,
