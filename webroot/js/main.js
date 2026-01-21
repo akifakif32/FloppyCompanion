@@ -1,5 +1,48 @@
 // main.js - Initialization and Event Wiring
 
+// Updates variant and build type strings (called on init and language change)
+function updateTranslatableHomeStrings() {
+    const uname = window._cachedUname;
+    if (!uname) return;
+
+    const variantEl = document.getElementById('kernel-variant');
+    const buildTypeEl = document.getElementById('build-type');
+
+    // Update Variant
+    let variantFound = t('about.variantStandard') || 'Standard';
+    if (window.VARIANTS) {
+        for (const [code, name] of Object.entries(window.VARIANTS)) {
+            const regex = new RegExp(`-${code}(-|$)`);
+            if (regex.test(uname)) {
+                variantFound = name;
+                break;
+            }
+        }
+    }
+    if (variantEl) variantEl.textContent = variantFound;
+
+    // Update Build Type
+    if (buildTypeEl) {
+        if (uname.includes('-release')) {
+            buildTypeEl.textContent = t('about.build.release') || 'Release Build';
+            buildTypeEl.style.color = 'var(--md-sys-color-primary)';
+        } else {
+            let label = t('about.build.testing') || 'Testing';
+            const hashMatch = uname.match(/-g([0-9a-f]+)/);
+            if (hashMatch) {
+                label += ` (${hashMatch[1]})`;
+            } else {
+                label += ` (${t('about.build.git') || 'Git'})`;
+            }
+            if (uname.includes('dirty')) {
+                label += ` (${t('about.build.dirty') || 'Dirty'})`;
+                buildTypeEl.style.color = '#e2b349';
+            }
+            buildTypeEl.textContent = label;
+        }
+    }
+}
+
 async function init() {
     let uiRevealed = false;
     const revealUI = () => {
@@ -431,6 +474,7 @@ async function init() {
             versionEl.textContent = uname;
         }
 
+        window._cachedUname = uname; // Cache for language change handler
         // Parse Variant
         let variantFound = t('about.variantStandard') || 'Standard';
         if (window.VARIANTS) {
@@ -465,6 +509,8 @@ async function init() {
             }
         }
 
+        // Listen for language changes to update translatable strings
+        document.addEventListener('languageChanged', updateTranslatableHomeStrings);
         // Check for unsupported version
         const versionWarning = document.getElementById('version-warning');
         if (versionWarning && versionMatch) {
