@@ -321,9 +321,9 @@ function renderFeatures(schema, procCmdline) {
         // Current Value Display
         let displayValText = currentVal;
         if (currentVal === '0') {
-            displayValText += ' (Disabled)';
+            displayValText += ' (' + (t('features.optionDisabled') || 'Disabled') + ')';
         }
-        const currentValueHtml = `<div class="current-value-display">Current: ${displayValText}</div>`;
+        const currentValueHtml = `<div class="current-value-display">${t('features.currentLabel') || 'Current:'} ${displayValText}</div>`;
 
         // Feature-level experimental badge
         const featureExpBadge = item.experimental ? `<span class="experimental-badge" title="${t('features.tooltipExperimental') || 'Experimental'}"><svg viewBox="${warningIcon.viewBox}" width="18" height="18"><path fill="#F44336" d="${warningIcon.d}"/></svg></span>` : '';

@@ -44,7 +44,8 @@
         "tooltipReboot": "¡El valor del kernel en ejecución y el valor de la partición de boot no coinciden! Podría haber un reinicio pendiente para aplicar cambios.",
         "tooltipReadOnlyAllowed": "Se permite cambiar el estado de esta función temporalmente, pero no se guardará.",
         "tooltipReadOnlyBlocked": "El estado de esta función no se puede cambiar desde la interfaz normalmente (solo lectura).",
-        "tooltipExperimental": "Experimental"
+        "tooltipExperimental": "Experimental",
+        "currentLabel": "Actual:"
     },
     "tweaks": {
         "title": "Tweaks",
