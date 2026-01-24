@@ -1215,13 +1215,17 @@ body {
 
 .tweak-actions {
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-end;
     gap: 8px;
     margin-top: 16px;
 }
 
 .tweak-action-btn {
-    padding: 10px 20px;
+    padding: 8px 14px;
+    flex: 1 1 auto;
+    min-width: 0;
+    text-align: center;
     border: none;
     border-radius: var(--md-sys-shape-corner-medium);
     font-size: 14px;
