@@ -1,0 +1,60 @@
+name: Build FloppyCompanion
+
+on:
+  push:
+    branches:
+      - "**"
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    name: Build & upload artifact
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends curl unzip zip
+
+      - name: Build zip (build.sh)
+        run: |
+          chmod +x ./build.sh
+          ./build.sh
+
+      - name: Locate output zip
+        id: out
+        run: |
+          shopt -s nullglob
+          files=(out/*.zip)
+          if (( ${#files[@]} == 0 )); then
+            echo "No zip produced in out/"
+            ls -la out || true
+            exit 1
+          fi
+          if (( ${#files[@]} > 1 )); then
+            echo "Multiple zips found in out/; refusing to guess:"
+            printf '%s\n' "${files[@]}"
+            exit 1
+          fi
+
+          zip_path="${files[0]}"
+          zip_name="$(basename "$zip_path")"
+          echo "zip_path=$zip_path" >> "$GITHUB_OUTPUT"
+          echo "zip_name=$zip_name" >> "$GITHUB_OUTPUT"
+
+      - name: Upload artifact (same name as build.sh zip)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.out.outputs.zip_name }}
+          path: ${{ steps.out.outputs.zip_path }}
+          if-no-files-found: error
