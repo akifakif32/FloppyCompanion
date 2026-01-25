@@ -84,7 +84,7 @@ FloppyCompanion currently supports the following languages:
 - English
 - Spanish
 - Turkish
-- Ukranian
+- Ukrainian
 
 Want to help translate? Check out the [Translation Guide](docs/TRANSLATION_GUIDE.md).
 
