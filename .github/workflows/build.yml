@@ -52,7 +52,7 @@ jobs:
           echo "zip_path=$zip_path" >> "$GITHUB_OUTPUT"
           echo "zip_name=$zip_name" >> "$GITHUB_OUTPUT"
 
-      - name: Upload artifact (same name as build.sh zip)
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.out.outputs.zip_name }}
