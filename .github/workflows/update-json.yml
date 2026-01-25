@@ -1,0 +1,68 @@
+name: Update update.json on Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  update-json:
+    name: Update update.json
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - name: Get release info
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+          # Get the zip asset browser download URL (first .zip file in the release)
+          ZIP_URL=$(gh release view "$TAG" --json assets --jq '.assets[] | select(.name | endswith(".zip")) | .browserDownloadUrl' | head -n1)
+          if [ -z "$ZIP_URL" ]; then
+            echo "No zip asset found in release $TAG"
+            exit 1
+          fi
+          echo "zip_url=$ZIP_URL" >> "$GITHUB_OUTPUT"
+
+          # Get versionCode from module.prop
+          VERSION_CODE=$(grep "^versionCode=" module.prop | cut -d= -f2)
+          echo "version_code=$VERSION_CODE" >> "$GITHUB_OUTPUT"
+
+          # Get version from module.prop
+          VERSION=$(grep "^version=" module.prop | cut -d= -f2)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Update update.json
+        run: |
+          cat > update.json << EOF
+          {
+              "version": "${{ steps.release.outputs.version }}",
+              "versionCode": ${{ steps.release.outputs.version_code }},
+              "zipUrl": "${{ steps.release.outputs.zip_url }}",
+              "changelog": "https://raw.githubusercontent.com/${{ github.repository }}/master/CHANGELOG.md"
+          }
+          EOF
+
+          echo "Updated update.json:"
+          cat update.json
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add update.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "update: Bump update.json for ${{ steps.release.outputs.tag }}"
+            git push
+          fi
