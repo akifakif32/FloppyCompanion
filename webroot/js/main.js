@@ -789,7 +789,8 @@ function renderProjectCredits(container, data) {
         }
 
         if (person.role) {
-            content += ` <span class="credits-role">(${person.role})</span>`;
+            const roleTranslated = t(person.role);
+            content += ` <span class="credits-role">(${roleTranslated})</span>`;
         }
 
         html += `<li>${content}</li>`;

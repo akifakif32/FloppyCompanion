@@ -217,6 +217,7 @@
         "description": "FloppyKernel'i yapılandırmak için yardımcı modül.",
         "moduleLinks": "Modül bağlantıları",
         "projectCredits": "Proje ekibi",
+        "roleFlopster": "Modül ve FloppyKernel geliştiricisi",
         "kernelLinksTemplate": "{name} bağlantıları",
         "translationCredits": "Çeviri ekibi",
         "repository": "Depo",

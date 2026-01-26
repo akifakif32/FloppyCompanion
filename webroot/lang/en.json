@@ -217,6 +217,7 @@
         "description": "Companion module to configure FloppyKernel.",
         "moduleLinks": "Module links",
         "projectCredits": "Project credits",
+        "roleFlopster": "Developer of module and FloppyKernel",
         "kernelLinksTemplate": "{name} links",
         "translationCredits": "Translation credits",
         "repository": "repository",
