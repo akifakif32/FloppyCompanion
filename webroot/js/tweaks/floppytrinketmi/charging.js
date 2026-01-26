@@ -137,4 +137,17 @@ async function initChargingTweak() {
     });
 
     loadChargingState();
+
+    if (typeof window.registerTweak === 'function') {
+        window.registerTweak('charging', {
+            getState: () => ({ ...chargingPendingState }),
+            setState: (config) => {
+                chargingPendingState = { ...config };
+                renderChargingCard();
+            },
+            render: renderChargingCard,
+            save: saveCharging,
+            apply: applyCharging
+        });
+    }
 }

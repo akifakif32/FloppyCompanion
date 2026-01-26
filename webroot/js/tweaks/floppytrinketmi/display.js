@@ -165,5 +165,18 @@ function initDisplayTweak() {
         });
 
         loadDisplayState();
+
+        if (typeof window.registerTweak === 'function') {
+            window.registerTweak('display', {
+                getState: () => ({ ...displayPendingState }),
+                setState: (config) => {
+                    displayPendingState = { ...config };
+                    renderDisplayCard();
+                },
+                render: renderDisplayCard,
+                save: saveDisplay,
+                apply: applyDisplay
+            });
+        }
     });
 }

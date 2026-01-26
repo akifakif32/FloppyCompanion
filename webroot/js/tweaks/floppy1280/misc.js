@@ -206,4 +206,17 @@ function initMiscTweak() {
     document.addEventListener('languageChanged', () => {
         renderMiscCard();
     });
+
+    if (typeof window.registerTweak === 'function') {
+        window.registerTweak('misc', {
+            getState: () => ({ ...miscPendingState }),
+            setState: (config) => {
+                miscPendingState = { ...config };
+                renderMiscCard();
+            },
+            render: renderMiscCard,
+            save: saveMisc,
+            apply: applyMisc
+        });
+    }
 }

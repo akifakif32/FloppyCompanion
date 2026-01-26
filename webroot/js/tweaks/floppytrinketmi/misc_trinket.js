@@ -145,5 +145,18 @@ function initMiscTrinketTweak() {
         });
 
         loadMiscTrinketState();
+
+        if (typeof window.registerTweak === 'function') {
+            window.registerTweak('misc_trinket', {
+                getState: () => ({ ...miscTrinketPendingState }),
+                setState: (config) => {
+                    miscTrinketPendingState = { ...config };
+                    renderMiscTrinketCard();
+                },
+                render: renderMiscTrinketCard,
+                save: saveMiscTrinket,
+                apply: applyMiscTrinket
+            });
+        }
     });
 }

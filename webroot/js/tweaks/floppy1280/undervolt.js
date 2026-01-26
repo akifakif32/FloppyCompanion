@@ -272,4 +272,17 @@ function initUndervoltTweak() {
     document.addEventListener('languageChanged', () => {
         if (undervoltAvailable) renderUndervoltCard();
     });
+
+    if (typeof window.registerTweak === 'function') {
+        window.registerTweak('undervolt', {
+            getState: () => ({ ...undervoltPendingState }),
+            setState: (config) => {
+                undervoltPendingState = { ...config };
+                renderUndervoltCard();
+            },
+            render: renderUndervoltCard,
+            save: saveUndervolt,
+            apply: applyUndervolt
+        });
+    }
 }

@@ -270,4 +270,23 @@ function initSoundControlTweak() {
     document.addEventListener('languageChanged', () => {
         renderSoundControlCard();
     });
+
+    if (typeof window.registerTweak === 'function') {
+        window.registerTweak('soundcontrol', {
+            getState: () => ({ ...scPendingState }),
+            setState: (config) => {
+                scPendingState = { ...config };
+                // Handle split mode logic during restore
+                if (scPendingState.hp_l !== scPendingState.hp_r) {
+                    toggleSoundControlSplitMode(true);
+                    const splitSwitch = document.getElementById('soundcontrol-split-switch');
+                    if (splitSwitch) splitSwitch.checked = true;
+                }
+                renderSoundControlCard();
+            },
+            render: renderSoundControlCard,
+            save: saveSoundControl,
+            apply: applySoundControl
+        });
+    }
 }

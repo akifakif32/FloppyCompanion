@@ -308,5 +308,18 @@ function initAdrenoTweak() {
         });
 
         loadAdrenoState();
+
+        if (typeof window.registerTweak === 'function') {
+            window.registerTweak('adreno', {
+                getState: () => ({ ...adrenoPendingState }),
+                setState: (config) => {
+                    adrenoPendingState = { ...config };
+                    renderAdrenoCard();
+                },
+                render: renderAdrenoCard,
+                save: saveAdreno,
+                apply: applyAdreno
+            });
+        }
     });
 }
