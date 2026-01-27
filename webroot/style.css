@@ -295,7 +295,9 @@ body.theme-detect-anim .nav-item .icon {
 .value-with-icon {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 8px;
+    text-align: right;
 }
 
 .status-icon-wrapper {
@@ -1501,11 +1503,13 @@ body {
 .label {
     color: var(--md-sys-color-on-surface-variant);
     font-weight: 500;
+    flex-shrink: 0;
 }
 
 .value {
     color: var(--md-sys-color-on-surface);
     font-weight: 600;
+    text-align: right;
 }
 
 /* Error State */
