@@ -209,6 +209,7 @@
     "description": "Допоміжний модуль для налаштування FloppyKernel.",
     "moduleLinks": "Посилання",
     "projectCredits": "Автори проєкту",
+    "roleFlopster": "Розробник модуля та FloppyKernel",
     "kernelLinksTemplate": "Посилання {name}",
     "translationCredits": "Автори перекладу",
     "repository": "репозиторій",
