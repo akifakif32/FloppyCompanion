@@ -19,6 +19,8 @@
     --md-sys-shape-corner-medium: 12px;
     --md-sys-color-surface-container: #f3f3f3;
     --md-sys-color-surface-container-high: #ffffff;
+    --md-sys-color-inverse-surface: #2f3033;
+    --md-sys-color-inverse-on-surface: #f1f0f4;
     --terminal-bg: #eeeeee;
     --terminal-text: #1b5e20;
     /* Dark Green */
@@ -53,6 +55,8 @@ body.theme-detect-anim {
         --md-sys-color-outline-variant: #444745;
         --md-sys-color-surface-container: #202124;
         --md-sys-color-surface-container-high: #2b2b2f;
+        --md-sys-color-inverse-surface: #e1e3e0;
+        --md-sys-color-inverse-on-surface: #2f3033;
         --terminal-bg: #1e1e1e;
         --terminal-text: #00e676;
     }
@@ -74,6 +78,8 @@ body.theme-light {
     --md-sys-color-outline: #747775;
     --md-sys-color-surface-container: #f3f3f3;
     --md-sys-color-surface-container-high: #ffffff;
+    --md-sys-color-inverse-surface: #2f3033;
+    --md-sys-color-inverse-on-surface: #f1f0f4;
     --terminal-bg: #eeeeee;
     --terminal-text: #1b5e20;
 }
@@ -93,6 +99,8 @@ body.theme-dark {
     --md-sys-color-outline: #8e918f;
     --md-sys-color-surface-container: #202124;
     --md-sys-color-surface-container-high: #2b2b2f;
+    --md-sys-color-inverse-surface: #e1e3e0;
+    --md-sys-color-inverse-on-surface: #2f3033;
     --terminal-bg: #1e1e1e;
     --terminal-text: #00e676;
 }
@@ -295,7 +303,9 @@ body.theme-detect-anim .nav-item .icon {
 .value-with-icon {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 8px;
+    text-align: right;
 }
 
 .status-icon-wrapper {
@@ -570,6 +580,7 @@ body {
 .slider-container {
     width: 100%;
     overflow: hidden;
+    overflow-x: hidden !important;
 }
 
 .slider-track {
@@ -585,6 +596,7 @@ body {
     flex-shrink: 0;
     height: 100vh;
     overflow-y: auto;
+    overflow-x: hidden;
 
     -webkit-overflow-scrolling: touch;
     padding-bottom: 80px;
@@ -866,9 +878,16 @@ body {
     transform: scale(0.95);
 }
 
+/* Only apply red color if not disabled */
+.preset-btn.danger:not(:disabled) {
+    color: #ba1a1a;
+}
+
 .preset-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    /* Reset color to inherit if it was overridden */
+    color: var(--md-sys-color-on-surface-variant);
 }
 
 .preset-btn .icon-svg-small {
@@ -1016,12 +1035,14 @@ body {
     appearance: none;
     height: 20px;
     /* Match thumb height for proper hit area */
-    width: 100%;
+    min-width: 0;
+    width: auto;
     background: transparent;
     /* Track is drawn via runnable-track */
     outline: none;
     margin: 0;
     padding: 0;
+    touch-action: none;
 }
 
 .styled-slider::-webkit-slider-runnable-track {
@@ -1273,12 +1294,12 @@ body {
 .pending-tooltip {
     position: absolute;
     top: 100%;
-    left: 0;
-    right: auto;
+    left: auto;
+    right: 0;
     margin-top: 8px;
     padding: 8px 12px;
-    background-color: var(--md-sys-color-inverse-surface);
-    color: var(--md-sys-color-inverse-on-surface);
+    background-color: var(--md-sys-color-surface-variant);
+    color: var(--md-sys-color-on-surface-variant);
     font-size: 12px;
     font-weight: 500;
     border-radius: 8px;
@@ -1290,6 +1311,7 @@ body {
     transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
     pointer-events: none;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 20; /* Ensure it stays on top */
 }
 
 .pending-indicator.show-tooltip .pending-tooltip {
@@ -1493,11 +1515,13 @@ body {
 .label {
     color: var(--md-sys-color-on-surface-variant);
     font-weight: 500;
+    flex-shrink: 0;
 }
 
 .value {
     color: var(--md-sys-color-on-surface);
     font-weight: 600;
+    text-align: right;
 }
 
 /* Error State */

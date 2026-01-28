@@ -258,7 +258,7 @@
             <div id="tab-tweaks" class="tab-content">
                 <div class="container main-content-padding">
                     <header class="hero">
-                        <h1 class="hero-title">Tweaks</h1>
+                        <h1 class="hero-title" data-i18n="tweaks.title">Tweaks</h1>
                     </header>
 
                     <!-- Preset Bar -->
@@ -281,6 +281,11 @@
                             </button>
                             <button class="preset-btn" id="preset-export-btn" title="Export preset to file" disabled>
                                 <svg class="icon-svg-small" viewBox="0 0 24 24" data-icon="export"></svg>
+                            </button>
+                            <!-- Spacer to push delete button to the right if needed, but flex gap handles it. 
+                                 We'll style it specifically in JS or CSS if needed. For now just append. -->
+                            <button class="preset-btn danger" id="preset-delete-btn" title="Delete preset" style="margin-left: auto;" disabled>
+                                <svg class="icon-svg-small" viewBox="0 0 24 24" data-icon="delete"></svg>
                             </button>
                         </div>
                     </div>

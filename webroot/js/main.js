@@ -581,7 +581,12 @@ async function init() {
         }
 
         if (kernelName) {
-            kernelLinksHeader.textContent = t('about.kernelLinksTemplate', { name: kernelName });
+            kernelLinksHeader.setAttribute('data-i18n', 'about.kernelLinksTemplate');
+            kernelLinksHeader.setAttribute('data-i18n-params', JSON.stringify({ name: kernelName }));
+            // Apply immediately
+            if (window.I18N && typeof window.I18N.t === 'function') {
+                kernelLinksHeader.textContent = window.I18N.t('about.kernelLinksTemplate', { name: kernelName });
+            }
         }
 
         if (kernelLinks.length > 0) {
@@ -763,6 +768,11 @@ async function init() {
                 if (translationCreditsList) {
                     renderTranslationCredits(translationCreditsList, creditsData);
                 }
+
+                // Force translation update for the newly injected content
+                if (window.I18N && typeof window.I18N.applyTranslations === 'function') {
+                    window.I18N.applyTranslations();
+                }
             }
         } catch (e) {
             console.error('Failed to load credits:', e);
@@ -789,7 +799,8 @@ function renderProjectCredits(container, data) {
         }
 
         if (person.role) {
-            content += ` <span class="credits-role">(${person.role})</span>`;
+            // Use data-i18n for automatic updates
+            content += ` <span class="credits-role">(<span data-i18n="${person.role}">${person.role}</span>)</span>`;
         }
 
         html += `<li>${content}</li>`;

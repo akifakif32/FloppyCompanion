@@ -148,6 +148,20 @@ async function applyMisc() {
 }
 
 function initMiscTweak() {
+    // Register tweak immediately (Early Registration)
+    if (typeof window.registerTweak === 'function') {
+        window.registerTweak('misc', {
+            getState: () => ({ ...miscPendingState }),
+            setState: (config) => {
+                miscPendingState = { ...miscPendingState, ...config };
+                renderMiscCard();
+            },
+            render: renderMiscCard,
+            save: saveMisc,
+            apply: applyMisc
+        });
+    }
+
     const miscCard = document.getElementById('misc-card');
     if (!miscCard) return;
 

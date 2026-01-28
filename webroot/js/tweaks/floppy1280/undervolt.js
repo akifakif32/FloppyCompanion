@@ -198,6 +198,34 @@ async function clearUndervoltPersistence() {
 window.clearUndervoltPersistence = clearUndervoltPersistence;
 
 function initUndervoltTweak() {
+    // Register tweak immediately (Early Registration)
+    if (typeof window.registerTweak === 'function') {
+        window.registerTweak('undervolt', {
+            getState: () => ({ ...undervoltPendingState }),
+            setState: (config) => {
+                undervoltPendingState = { ...undervoltPendingState, ...config };
+                
+                // Auto-unlock if any value exceeds safe limit (15)
+                const isHighValue = ['little', 'big', 'gpu'].some(key => {
+                    const val = parseInt(undervoltPendingState[key] || '0');
+                    return val > 15;
+                });
+                
+                if (isHighValue) {
+                    const unlockSwitch = document.getElementById('undervolt-unlock-switch');
+                    if (unlockSwitch && !unlockSwitch.checked) {
+                        unlockSwitch.checked = true;
+                    }
+                }
+
+                renderUndervoltCard();
+            },
+            render: renderUndervoltCard,
+            save: saveUndervolt,
+            apply: applyUndervolt
+        });
+    }
+
     loadUndervoltState();
 
     // Unlock Switch
@@ -207,7 +235,7 @@ function initUndervoltTweak() {
         const input = document.getElementById(`undervolt-input-${type}`);
 
         if (slider) {
-            preventSwipePropagation(slider); // Fix swipe conflict
+            if (window.preventSwipePropagation) window.preventSwipePropagation(slider); // Fix swipe conflict
 
             slider.addEventListener('input', (e) => {
                 const val = e.target.value;
@@ -219,6 +247,8 @@ function initUndervoltTweak() {
         }
 
         if (input) {
+            if (window.preventSwipePropagation) window.preventSwipePropagation(input);
+
             input.addEventListener('change', (e) => {
                 let val = parseInt(e.target.value) || 0;
                 // Clamp

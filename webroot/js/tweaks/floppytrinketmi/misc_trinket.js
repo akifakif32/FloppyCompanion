@@ -116,6 +116,20 @@ function initMiscTrinketTweak() {
         return;
     }
 
+    // Register tweak immediately (Early Registration)
+    if (typeof window.registerTweak === 'function') {
+        window.registerTweak('misc_trinket', {
+            getState: () => ({ ...miscTrinketPendingState }),
+            setState: (config) => {
+                miscTrinketPendingState = { ...miscTrinketPendingState, ...config };
+                renderMiscTrinketCard();
+            },
+            render: renderMiscTrinketCard,
+            save: saveMiscTrinket,
+            apply: applyMiscTrinket
+        });
+    }
+
     runMiscTrinketBackend('is_available').then((availability) => {
         const available = parseKeyValue(availability).available === '1';
         if (!available) {
@@ -144,6 +158,8 @@ function initMiscTrinketTweak() {
             renderMiscTrinketCard();
         });
 
-        loadMiscTrinketState();
-    });
-}
+                loadMiscTrinketState();
+
+            });
+
+        }

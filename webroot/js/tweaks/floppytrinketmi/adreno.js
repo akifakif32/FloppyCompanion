@@ -233,6 +233,20 @@ function initAdrenoTweak() {
         return;
     }
 
+    // Register tweak immediately (Early Registration)
+    if (typeof window.registerTweak === 'function') {
+        window.registerTweak('adreno', {
+            getState: () => ({ ...adrenoPendingState }),
+            setState: (config) => {
+                adrenoPendingState = { ...adrenoPendingState, ...config };
+                renderAdrenoCard();
+            },
+            render: renderAdrenoCard,
+            save: saveAdreno,
+            apply: applyAdreno
+        });
+    }
+
     runAdrenoBackend('is_available').then((availability) => {
         const available = parseKeyValue(availability).available === '1';
         if (!available) {
@@ -307,6 +321,8 @@ function initAdrenoTweak() {
             renderAdrenoCard();
         });
 
-        loadAdrenoState();
-    });
-}
+                loadAdrenoState();
+
+            });
+
+        }

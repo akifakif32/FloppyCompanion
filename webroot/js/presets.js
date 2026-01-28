@@ -220,7 +220,7 @@ async function savePresetAs(name) {
         tweaks: collectAllTweakStates()
     };
 
-    const presetDir = '/data/adb/modules/floppy_companion/presets';
+    const presetDir = '/data/adb/floppy_companion/presets';
     const filePath = `${presetDir}/${name}.json`;
 
     // Write file
@@ -309,14 +309,14 @@ async function handleImportPreset() {
 
     // Sanitize name
     const name = (presetData.name || file.name.replace('.json', '')).replace(/[^a-zA-Z0-9_-]/g, '_');
-    const modulePresetDir = '/data/adb/modules/floppy_companion/presets';
-    const moduleFilePath = `${modulePresetDir}/${name}.json`;
+    const presetDir = '/data/adb/floppy_companion/presets';
+    const filePath = `${presetDir}/${name}.json`;
 
     presetData.name = name;
     presetData.builtIn = false;
 
     const json = JSON.stringify(presetData, null, 2);
-    await exec(`mkdir -p "${modulePresetDir}" && cat > "${moduleFilePath}" << 'PRESET_EOF'
+    await exec(`mkdir -p "${presetDir}" && cat > "${filePath}" << 'PRESET_EOF'
 ${json}
 PRESET_EOF`);
 
@@ -329,15 +329,61 @@ PRESET_EOF`);
     showToast(`Imported "${name}"`);
 }
 
+// Handle Delete button click
+async function handleDeletePreset() {
+    if (currentPresetBuiltIn) {
+        showToast('Cannot delete built-in presets', true);
+        return;
+    }
+
+    const title = window.t ? window.t('tweaks.deletePresetTitle') : 'Delete Preset';
+    const message = window.t 
+        ? window.t('tweaks.deletePresetConfirm').replace('{name}', currentPresetName) 
+        : `Are you sure you want to delete preset "${currentPresetName}"?`;
+    
+    const confirmBtnText = window.t ? window.t('modal.delete') : 'Delete';
+    const cancelBtnText = window.t ? window.t('modal.cancel') : 'Cancel';
+
+    const confirmed = await showConfirmModal({
+        title: title,
+        body: `<p>${message}</p>`,
+        iconClass: 'warning', // Shows red warning icon
+        confirmText: confirmBtnText,
+        cancelText: cancelBtnText
+    });
+
+    if (!confirmed) return;
+
+    const presetDir = '/data/adb/floppy_companion/presets';
+    const filePath = `${presetDir}/${currentPresetName}.json`;
+
+    // Execute delete
+    await exec(`rm "${filePath}"`);
+    
+    showToast(`Deleted "${currentPresetName}"`);
+
+    // Reset to Default
+    currentPresetName = 'Default';
+    currentPresetBuiltIn = true;
+    
+    // Reload list
+    await loadAvailablePresets();
+}
+
 // Prompt for preset name
 async function promptPresetName() {
+    const title = t('tweaks.savePresetTitle');
+    const bodyText = t('tweaks.presetNamePrompt');
+    const confirmText = t('tweaks.save');
+    const cancelText = t('modal.cancel');
+
     const result = await showConfirmModal({
-        title: 'Save Preset',
-        body: `<p>Enter a name for the preset:</p>
+        title: title,
+        body: `<p>${bodyText}</p>
                <input type="text" id="save-preset-name-input" class="preset-name-input" placeholder="My Preset" maxlength="32" style="margin-top: 8px;">`,
         iconName: 'save',
-        confirmText: 'Save',
-        cancelText: 'Cancel'
+        confirmText: confirmText,
+        cancelText: cancelText
     });
 
     if (result === true) {
@@ -351,13 +397,19 @@ async function promptPresetName() {
 
 // Show overwrite prompt
 async function showOverwritePrompt() {
+    const title = t('tweaks.overwriteTitle');
+    const bodyText = t('tweaks.overwriteConfirm').replace('{name}', currentPresetName);
+    const confirmText = t('modal.overwrite') || 'Overwrite'; // Fallback if missing
+    const cancelText = t('modal.cancel');
+    const extraText = t('tweaks.saveAsNew');
+
     const result = await showConfirmModal({
-        title: 'Save Preset',
-        body: `<p>Do you want to overwrite "${currentPresetName}" or save as a new preset?</p>`,
+        title: title,
+        body: `<p>${bodyText}</p>`,
         iconClass: 'info',
-        confirmText: 'Overwrite',
-        cancelText: t('modal.cancel'),
-        extraButton: { text: 'Save as New', value: 'new' }
+        confirmText: confirmText,
+        cancelText: cancelText,
+        extraButton: { text: extraText, value: 'new' }
     });
 
     if (result === true) return 'overwrite';
@@ -392,6 +444,13 @@ function renderPresetSelector() {
         exportBtn.disabled = currentPresetBuiltIn;
         exportBtn.style.opacity = currentPresetBuiltIn ? '0.5' : '1';
     }
+
+    // Update delete button state
+    const deleteBtn = document.getElementById('preset-delete-btn');
+    if (deleteBtn) {
+        deleteBtn.disabled = currentPresetBuiltIn;
+        deleteBtn.style.opacity = currentPresetBuiltIn ? '0.5' : '1';
+    }
 }
 
 // =============================================================================
@@ -411,6 +470,7 @@ async function initPresets() {
     const saveBtn = document.getElementById('preset-save-btn');
     const importBtn = document.getElementById('preset-import-btn');
     const exportBtn = document.getElementById('preset-export-btn');
+    const deleteBtn = document.getElementById('preset-delete-btn');
 
     if (selector) {
         selector.addEventListener('change', (e) => {
@@ -427,6 +487,7 @@ async function initPresets() {
     if (saveBtn) saveBtn.addEventListener('click', handleSavePreset);
     if (importBtn) importBtn.addEventListener('click', handleImportPreset);
     if (exportBtn) exportBtn.addEventListener('click', handleExportPreset);
+    if (deleteBtn) deleteBtn.addEventListener('click', handleDeletePreset);
 
     // Re-render preset selector when language changes
     document.addEventListener('languageChanged', renderPresetSelector);

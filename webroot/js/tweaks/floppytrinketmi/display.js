@@ -122,6 +122,20 @@ function initDisplayTweak() {
         return;
     }
 
+    // Register tweak immediately (Early Registration)
+    if (typeof window.registerTweak === 'function') {
+        window.registerTweak('display', {
+            getState: () => ({ ...displayPendingState }),
+            setState: (config) => {
+                displayPendingState = { ...displayPendingState, ...config };
+                renderDisplayCard();
+            },
+            render: renderDisplayCard,
+            save: saveDisplay,
+            apply: applyDisplay
+        });
+    }
+
     // Check availability via backend
     runDisplayBackend('is_available').then((availability) => {
         const available = parseKeyValue(availability).available === '1';
@@ -164,6 +178,8 @@ function initDisplayTweak() {
             renderDisplayCard();
         });
 
-        loadDisplayState();
-    });
-}
+                loadDisplayState();
+
+            });
+
+        }

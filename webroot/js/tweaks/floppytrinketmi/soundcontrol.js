@@ -165,6 +165,26 @@ function updateSoundControlSliderTicks(slider) {
 }
 
 function initSoundControlTweak() {
+    // Register tweak immediately (Early Registration)
+    if (typeof window.registerTweak === 'function') {
+        window.registerTweak('soundcontrol', {
+            getState: () => ({ ...scPendingState }),
+            setState: (config) => {
+                scPendingState = { ...scPendingState, ...config };
+                // Handle split mode logic during restore
+                if (scPendingState.hp_l !== scPendingState.hp_r) {
+                    toggleSoundControlSplitMode(true);
+                    const splitSwitch = document.getElementById('soundcontrol-split-switch');
+                    if (splitSwitch) splitSwitch.checked = true;
+                }
+                renderSoundControlCard();
+            },
+            render: renderSoundControlCard,
+            save: saveSoundControl,
+            apply: applySoundControl
+        });
+    }
+
     const card = document.getElementById('soundcontrol-card');
     if (!card) return;
 
@@ -245,9 +265,9 @@ function initSoundControlTweak() {
     if (sliderMic) sliderMic.addEventListener('input', (e) => syncMic(e.target.value));
     if (inputMic) inputMic.addEventListener('change', (e) => syncMic(e.target.value));
 
-    // Prevent swipe conflicts on all sliders
-    [sliderHp, sliderHpL, sliderHpR, sliderMic].forEach(slider => {
-        if (slider) preventSwipePropagation(slider);
+    // Prevent swipe conflicts on all sliders and inputs
+    [sliderHp, sliderHpL, sliderHpR, sliderMic, inputHp, inputHpL, inputHpR, inputMic].forEach(el => {
+        if (el && window.preventSwipePropagation) window.preventSwipePropagation(el);
     });
 
     // Add ticks to sliders (21 ticks for 0-20 range)
