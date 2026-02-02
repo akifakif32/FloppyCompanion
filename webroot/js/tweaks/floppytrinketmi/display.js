@@ -63,10 +63,7 @@ async function loadDisplayState() {
         cabc: current.cabc || '0'
     };
 
-    displaySavedState = {
-        hbm: saved.hbm || displayCurrentState.hbm || '0',
-        cabc: saved.cabc || displayCurrentState.cabc || '0'
-    };
+    displaySavedState = { ...saved };
 
     const defDisplay = window.getDefaultTweakPreset('display');
     displayPendingState = window.initPendingState(displayCurrentState, displaySavedState, defDisplay);

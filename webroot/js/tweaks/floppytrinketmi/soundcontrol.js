@@ -80,11 +80,7 @@ async function loadSoundControlState() {
         mic: current.mic || '0'
     };
 
-    scSavedState = {
-        hp_l: saved.hp_l || '0',
-        hp_r: saved.hp_r || '0',
-        mic: saved.mic || '0'
-    };
+    scSavedState = { ...saved };
 
     const defSound = window.getDefaultTweakPreset('soundcontrol');
     scPendingState = window.initPendingState(scCurrentState, scSavedState, defSound);

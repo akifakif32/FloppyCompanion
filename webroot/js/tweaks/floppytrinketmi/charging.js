@@ -42,10 +42,7 @@ async function loadChargingState() {
         fast: current.fast || '0'
     };
 
-    chargingSavedState = {
-        bypass: saved.bypass || chargingCurrentState.bypass || '0',
-        fast: saved.fast || chargingCurrentState.fast || '0'
-    };
+    chargingSavedState = { ...saved };
 
     const defCharging = window.getDefaultTweakPreset('charging');
     chargingPendingState = window.initPendingState(chargingCurrentState, chargingSavedState, defCharging);

@@ -137,15 +137,7 @@ async function loadAdrenoState() {
         idler_idleworkload: current.idler_idleworkload || '5000'
     };
 
-    const savedNormalized = {
-        adrenoboost: saved.adrenoboost || '0',
-        idler_active: saved.idler_active || 'N',
-        idler_downdifferential: saved.idler_downdifferential || '20',
-        idler_idlewait: saved.idler_idlewait || '15',
-        idler_idleworkload: saved.idler_idleworkload || '5000'
-    };
-
-    adrenoSavedState = { ...savedNormalized };
+    adrenoSavedState = { ...saved };
 
     const defAdreno = window.getDefaultTweakPreset('adreno');
     adrenoPendingState = window.initPendingState(adrenoCurrentState, adrenoSavedState, defAdreno);

@@ -37,11 +37,7 @@ async function loadMiscTrinketState() {
     };
 
     // Normalize saved values (use defaults if empty)
-    const savedNormalized = {
-        touchboost: saved.touchboost || '0'
-    };
-
-    miscTrinketSavedState = { ...savedNormalized };
+    miscTrinketSavedState = { ...saved };
 
     const defMiscTrinket = window.getDefaultTweakPreset('misc_trinket');
     miscTrinketPendingState = window.initPendingState(miscTrinketCurrentState, miscTrinketSavedState, defMiscTrinket);

@@ -83,11 +83,7 @@ async function loadMiscState() {
         gpu_unlock: current.gpu_unlock || '0'
     };
 
-    miscSavedState = {
-        block_ed3: saved.block_ed3 || '0',
-        gpu_clklck: saved.gpu_clklck || '0',
-        gpu_unlock: saved.gpu_unlock || '0'
-    };
+    miscSavedState = { ...saved };
 
     const defMisc = window.getDefaultTweakPreset('misc');
     miscPendingState = window.initPendingState(miscCurrentState, miscSavedState, defMisc);
