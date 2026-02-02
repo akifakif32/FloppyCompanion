@@ -49,7 +49,25 @@
         "currentLabel": "Actual:"
     },
     "monitor": {
-        "title": "Monitor"
+        "title": "Monitor",
+        "memory": {
+            "title": "Memoria",
+            "usedMemory": "Memoria usada",
+            "usedSwap": "Swap (ZRAM / archivo de intercambio)",
+            "totalSection": "Memoria total",
+            "totalLabel": "Total",
+            "zramSection": "ZRAM",
+            "zramDisksize": "Tamaño de disco",
+            "zramAlgorithm": "Compresión",
+            "vmSection": "Ajustes VM",
+            "swappiness": "Swappiness",
+            "dirtyRatio": "Dirty ratio",
+            "dirtyBackgroundRatio": "Dirty background ratio",
+            "dirtyBytes": "Dirty bytes",
+            "dirtyBackgroundBytes": "Dirty background bytes",
+            "usedSuffix": "usado",
+            "totalSuffix": "total"
+        }
     },
     "tweaks": {
         "title": "Tweaks",

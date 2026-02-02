@@ -1481,6 +1481,97 @@ body {
     margin-bottom: 16px;
 }
 
+/* --- Monitor (Memory) --- */
+.monitor-card .card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.monitor-graph-block {
+    background-color: var(--md-sys-color-surface-container-high);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: var(--md-sys-shape-corner-medium);
+    padding: 16px;
+    overflow: hidden;
+}
+
+.monitor-graph-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--md-sys-color-on-surface);
+    margin-bottom: 12px;
+}
+
+.monitor-graph {
+    width: 100%;
+    height: 110px;
+    display: block;
+    border-radius: 8px;
+}
+
+.monitor-graph-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.monitor-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background-color: var(--md-sys-color-surface-variant);
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 13px;
+    font-weight: 500;
+    min-width: 0;
+}
+
+.monitor-section {
+    background-color: var(--md-sys-color-surface-container-high);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: var(--md-sys-shape-corner-medium);
+    padding: 14px;
+}
+
+.monitor-section-title {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--md-sys-color-primary);
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.monitor-stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--md-sys-color-surface-variant);
+}
+
+.monitor-stat-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.monitor-stat-label {
+    color: var(--md-sys-color-on-surface-variant);
+    font-weight: 500;
+}
+
+.monitor-stat-value {
+    color: var(--md-sys-color-on-surface);
+    font-weight: 600;
+}
+
 .card-header {
     display: flex;
     align-items: center;

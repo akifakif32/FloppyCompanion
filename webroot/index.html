@@ -1069,6 +1069,67 @@
                     <header class="hero">
                         <h1 class="hero-title" data-i18n="monitor.title">Monitor</h1>
                     </header>
+
+                    <div class="card monitor-card" id="monitor-memory-card">
+                        <div class="card-header">
+                            <span class="card-title" data-i18n="monitor.memory.title">Memory</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="monitor-graph-block">
+                                <div class="monitor-graph-title" data-i18n="monitor.memory.usedMemory">Used Memory</div>
+                                <canvas id="monitor-mem-graph" class="monitor-graph" aria-label="Memory usage graph"></canvas>
+                                <div class="monitor-graph-meta">
+                                    <span id="monitor-mem-used" class="monitor-pill">--</span>
+                                    <span id="monitor-mem-total" class="monitor-pill">--</span>
+                                </div>
+                            </div>
+
+                            <div class="monitor-graph-block">
+                                <div class="monitor-graph-title" data-i18n="monitor.memory.usedSwap">Swap (ZRAM / swapfile)</div>
+                                <canvas id="monitor-swap-graph" class="monitor-graph" aria-label="Swap usage graph"></canvas>
+                                <div class="monitor-graph-meta">
+                                    <span id="monitor-swap-used" class="monitor-pill">--</span>
+                                    <span id="monitor-swap-total" class="monitor-pill">--</span>
+                                </div>
+                            </div>
+
+                            <div class="monitor-section">
+                                <div class="monitor-section-title" data-i18n="monitor.memory.totalSection">Total Memory</div>
+                                <div class="monitor-stat-row">
+                                    <span class="monitor-stat-label" data-i18n="monitor.memory.totalLabel">Total</span>
+                                    <span class="monitor-stat-value" id="monitor-total-memory">--</span>
+                                </div>
+                            </div>
+
+                            <div class="monitor-section">
+                                <div class="monitor-section-title" data-i18n="monitor.memory.zramSection">ZRAM</div>
+                                <div class="monitor-stat-row">
+                                    <span class="monitor-stat-label" data-i18n="monitor.memory.zramDisksize">Disk size</span>
+                                    <span class="monitor-stat-value" id="monitor-zram-disksize">--</span>
+                                </div>
+                                <div class="monitor-stat-row">
+                                    <span class="monitor-stat-label" data-i18n="monitor.memory.zramAlgorithm">Compression</span>
+                                    <span class="monitor-stat-value" id="monitor-zram-algorithm">--</span>
+                                </div>
+                            </div>
+
+                            <div class="monitor-section">
+                                <div class="monitor-section-title" data-i18n="monitor.memory.vmSection">VM Settings</div>
+                                <div class="monitor-stat-row">
+                                    <span class="monitor-stat-label" data-i18n="monitor.memory.swappiness">Swappiness</span>
+                                    <span class="monitor-stat-value" id="monitor-vm-swappiness">--</span>
+                                </div>
+                                <div class="monitor-stat-row">
+                                    <span class="monitor-stat-label" id="monitor-vm-dirty-label">--</span>
+                                    <span class="monitor-stat-value" id="monitor-vm-dirty">--</span>
+                                </div>
+                                <div class="monitor-stat-row">
+                                    <span class="monitor-stat-label" id="monitor-vm-dirty-bg-label">--</span>
+                                    <span class="monitor-stat-value" id="monitor-vm-dirty-bg">--</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1262,6 +1323,7 @@
     <script src="vendor/micromod/AudioPlayer.js"></script>
     <script src="vendor/micromod/Micromod.js"></script>
     <script src="js/egg.js"></script>
+    <script src="js/monitor.js"></script>
     <script src="js/main.js"></script>
 </body>
 

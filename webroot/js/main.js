@@ -256,6 +256,11 @@ async function init() {
     // 1. Initialize UI Navigation
     initNavigation();
 
+    // Monitor tab
+    if (window.initMonitor) {
+        window.initMonitor();
+    }
+
     // Disable Features until detection completes.
     window.FEATURES_SUPPORTED = false;
     window.setFeaturesSupported = function (supported) {
