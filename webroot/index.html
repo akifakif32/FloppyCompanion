@@ -1070,9 +1070,12 @@
                         <h1 class="hero-title" data-i18n="monitor.title">Monitor</h1>
                     </header>
 
-                    <div class="card monitor-card" id="monitor-memory-card">
+                    <div class="card monitor-card collapsed" id="monitor-memory-card">
                         <div class="card-header">
                             <span class="card-title" data-i18n="monitor.memory.title">Memory</span>
+                            <button id="monitor-memory-toggle" class="icon-button monitor-toggle" aria-label="Toggle Memory" aria-expanded="false">
+                                <svg class="icon-svg" viewBox="0 0 24 24" data-icon="expand_more"></svg>
+                            </button>
                         </div>
                         <div class="card-content">
                             <div class="monitor-graph-block">
@@ -1131,9 +1134,12 @@
                         </div>
                     </div>
 
-                    <div class="card monitor-card" id="monitor-cpu-card">
+                    <div class="card monitor-card collapsed" id="monitor-cpu-card">
                         <div class="card-header">
                             <span class="card-title" data-i18n="monitor.cpu.title">CPU</span>
+                            <button id="monitor-cpu-toggle" class="icon-button monitor-toggle" aria-label="Toggle CPU" aria-expanded="false">
+                                <svg class="icon-svg" viewBox="0 0 24 24" data-icon="expand_more"></svg>
+                            </button>
                         </div>
                         <div class="card-content">
                             <div class="monitor-cpu-controls">

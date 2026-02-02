@@ -315,6 +315,24 @@
         if (el) el.textContent = text;
     }
 
+    function setupCollapse(cardId, toggleId) {
+        const card = document.getElementById(cardId);
+        const toggle = document.getElementById(toggleId);
+        if (!card || !toggle) return;
+
+        const setState = (collapsed) => {
+            card.classList.toggle('collapsed', collapsed);
+            toggle.setAttribute('aria-expanded', String(!collapsed));
+        };
+
+        setState(card.classList.contains('collapsed'));
+
+        toggle.addEventListener('click', () => {
+            const nextCollapsed = !card.classList.contains('collapsed');
+            setState(nextCollapsed);
+        });
+    }
+
     function renderCpuList(policyRows, coreRows) {
         const list = document.getElementById('monitor-cpu-list');
         if (!list) return;
@@ -694,6 +712,9 @@
         refreshMonitor();
         if (monitorTimer) clearInterval(monitorTimer);
         monitorTimer = setInterval(refreshMonitor, UPDATE_INTERVAL_MS);
+
+        setupCollapse('monitor-memory-card', 'monitor-memory-toggle');
+        setupCollapse('monitor-cpu-card', 'monitor-cpu-toggle');
 
         const clusterToggle = document.getElementById('monitor-cpu-view-cluster');
         const coreToggle = document.getElementById('monitor-cpu-view-core');
