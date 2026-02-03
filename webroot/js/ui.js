@@ -127,6 +127,8 @@ function updateSlide(index) {
     if (nextIndex === 1) {
         if (window.loadFeaturesIfNeeded) window.loadFeaturesIfNeeded();
     }
+
+    document.dispatchEvent(new CustomEvent('tabChanged', { detail: { index: nextIndex } }));
 }
 
 // Helper: Update bottom padding based on FAB visibility

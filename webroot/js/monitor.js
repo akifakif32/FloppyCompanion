@@ -5,6 +5,7 @@
 
     const HISTORY_POINTS = 60;
     const UPDATE_INTERVAL_MS = 1000;
+    const MONITOR_TAB_INDEX = 3;
 
     // History arrays - filled with null initially, data enters from right
     let memHistory = new Array(HISTORY_POINTS).fill(null);
@@ -12,6 +13,7 @@
     let monitorTimer = null;
     let lastUseBytes = false;
     let cpuViewMode = 'cluster';
+    let isMonitorActive = false;
 
     function clamp(value, min, max) {
         return Math.min(Math.max(value, min), max);
@@ -690,12 +692,25 @@
     }
 
     async function refreshMonitor() {
+        if (!isMonitorActive || document.hidden) return;
         const [memData, cpuData] = await Promise.all([
             fetchMonitorData(),
             fetchCpuData()
         ]);
         updateMonitorUI(memData);
         updateCpuUI(cpuData);
+    }
+
+    function startMonitorUpdates() {
+        if (monitorTimer) return;
+        refreshMonitor();
+        monitorTimer = setInterval(refreshMonitor, UPDATE_INTERVAL_MS);
+    }
+
+    function stopMonitorUpdates() {
+        if (!monitorTimer) return;
+        clearInterval(monitorTimer);
+        monitorTimer = null;
     }
 
     function initMonitor() {
@@ -709,12 +724,31 @@
         const memCanvas = document.getElementById('monitor-mem-graph');
         const swapCanvas = document.getElementById('monitor-swap-graph');
 
-        refreshMonitor();
-        if (monitorTimer) clearInterval(monitorTimer);
-        monitorTimer = setInterval(refreshMonitor, UPDATE_INTERVAL_MS);
+        stopMonitorUpdates();
+        if (isMonitorActive && !document.hidden) {
+            startMonitorUpdates();
+        }
 
         setupCollapse('monitor-memory-card', 'monitor-memory-toggle');
         setupCollapse('monitor-cpu-card', 'monitor-cpu-toggle');
+
+        document.addEventListener('tabChanged', (event) => {
+            const idx = event?.detail?.index;
+            isMonitorActive = idx === MONITOR_TAB_INDEX;
+            if (isMonitorActive && !document.hidden) {
+                startMonitorUpdates();
+            } else {
+                stopMonitorUpdates();
+            }
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                stopMonitorUpdates();
+            } else if (isMonitorActive) {
+                startMonitorUpdates();
+            }
+        });
 
         const clusterToggle = document.getElementById('monitor-cpu-view-cluster');
         const coreToggle = document.getElementById('monitor-cpu-view-core');
