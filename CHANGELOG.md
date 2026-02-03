@@ -1,5 +1,20 @@
 All notable changes to FloppyCompanion will be documented in this file.
 
+## v1.0.2
+
+- A ton of UI backend improvements for stability.
+- Improved presets and defaults system for consistency and to fix some bugs.
+- Visual improvements.
+- Preset deleting support
+- WebUI X support (untested)
+- Translate more things!
+- Add basic (for now) Monitor tab for checking status on Memory and CPU.
+#### PRs:
+- Enhance Preset System: Robustness, Persistence, and Full Localization by @MematiBas42 in #4
+- feat: add high-resolution WebUI icon and update module.prop by @MematiBas42 in #5
+- module: lang: Update Ukrainian translations by @NiFate in #7
+- module: lang: Update Turkish translations by @NotZezu in #8
+
 ## v1.0.1-hotfix
 
 - Added update.json support.

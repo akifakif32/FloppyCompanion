@@ -1,6 +1,6 @@
 {
-    "version": "v1.0.1-hotfix",
-    "versionCode": 10101,
-    "zipUrl": "https://github.com/FlopKernel-Series/FloppyCompanion/releases/download/v1.0.1-hotfix/FloppyCompanion-v1.0.1-hotfix.zip",
+    "version": "v1.0.2",
+    "versionCode": 10200,
+    "zipUrl": "https://github.com/FlopKernel-Series/FloppyCompanion/releases/download/v1.0.2/FloppyCompanion-v1.0.2-67abf53-20260203_2042.zip",
     "changelog": "https://raw.githubusercontent.com/FlopKernel-Series/FloppyCompanion/master/CHANGELOG.md"
 }
