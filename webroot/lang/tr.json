@@ -3,6 +3,7 @@
         "home": "Ana Sayfa",
         "features": "Özellikler",
         "tweaks": "Ayarlar",
+        "monitor": "İzleme",
         "about": "Hakkında"
     },
     "home": {
@@ -46,6 +47,50 @@
         "tooltipReadOnlyBlocked": "Bu özelliğin durumu normalde arayüzden değiştirilemez (salt okunur).",
         "tooltipExperimental": "Deneysel",
         "currentLabel": "Mevcut:"
+    },
+    "monitor": {
+        "title": "İzleme",
+        "memory": {
+            "title": "Bellek",
+            "usedMemory": "Kullanılan Bellek",
+            "usedSwap": "Takas (ZRAM / swapfile)",
+            "totalSection": "Toplam Bellek",
+            "totalLabel": "Toplam",
+            "zramSection": "ZRAM",
+            "zramDisksize": "Disk boyutu",
+            "zramAlgorithm": "Sıkıştırma",
+            "vmSection": "Sanal Bellek (VM) Ayarları",
+            "swappiness": "Swappiness",
+            "dirtyRatio": "Kirli oranı",
+            "dirtyBackgroundRatio": "Kirli arka plan oranı",
+            "dirtyBytes": "Kirli bayt",
+            "dirtyBackgroundBytes": "Kirli arka plan bayt",
+            "usedSuffix": "kullanılan",
+            "totalSuffix": "toplam"
+        },
+        "cpu": {
+            "title": "İşlemci",
+            "viewCluster": "Küme başına",
+            "viewCore": "Çekirdek başına",
+            "freqSection": "Çekirdekler",
+            "statusSection": "Özellikler",
+            "currentLabel": "Mevcut",
+            "minLabel": "Min",
+            "maxLabel": "Maks",
+            "govLabel": "Governor",
+            "clusterLittle": "Little kümesi",
+            "clusterBig": "Big kümesi",
+            "clusterMid": "Middle kümesi",
+            "unlockedMode": "Kilit Açık Modu",
+            "emsEfficient": "EMS Verimli",
+            "msmPerfBoost": "MSM Perf Artırma",
+            "enabled": "Etkin",
+            "disabled": "Devre Dışı",
+            "off": "Kapalı",
+            "noData": "CPU verisi yok",
+            "clusterLabel": "Küme {id}",
+            "cpuLabel": "CPU {id}"
+        }
     },
     "tweaks": {
         "title": "İnce Ayarlar",
@@ -240,7 +285,15 @@
         "settingsFailed": "Ayarlar uygulanamadı",
         "logSaved": "Günlük {path} yoluna kaydedildi",
         "logFailed": "Günlük kaydedilemedi",
-        "copied": "Panoya kopyalandı"
+        "copied": "Panoya kopyalandı",
+        "presetLoadFailed": "Hazır ayar yüklenemedi",
+        "presetDefaultApplied": "Varsayılan ayar uygulandı",
+        "presetDefaultLoaded": "Varsayılan ayar yüklendi",
+        "presetSavedApplied": "Hazır ayar kaydedildi ve uygulandı",
+        "presetLoadedSaved": "Hazır ayar yüklendi ve kaydedildi",
+        "presetExportBuiltIn": "Dahili hazır ayarlar dışa aktarılamaz",
+        "presetInvalidFile": "Geçersiz hazır ayar dosyası",
+        "presetDeleteBuiltIn": "Dahili hazır ayarlar silinemez"
     },
     "modal": {
         "confirm": "Onayla",
