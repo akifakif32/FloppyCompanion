@@ -31,7 +31,7 @@
     },
     "features": {
         "title": "Özellikler",
-        "kernelFeatures": "Kernel Özellikleri",
+        "kernelFeatures": "Kernel Özellİklerİ",
         "showExperimental": "Deneysel özellikleri göster",
         "allowReadOnly": "Salt okunur özelliklerin yamanmasına izin ver",
         "apply": "Uygula",
@@ -69,7 +69,7 @@
             "totalSuffix": "toplam"
         },
         "cpu": {
-            "title": "İşlemci",
+            "title": "İşlemcİ",
             "viewCluster": "Küme başına",
             "viewCore": "Çekirdek başına",
             "freqSection": "Çekirdekler",
@@ -164,7 +164,7 @@
             "desc3": "Daha az agresif termal kısıtlama. Frekanslar: 2400 → 2288 → 2208 MHz. Daha sıcak çalışır."
         },
         "undervolt": {
-            "title": "Undervolt (Voltaj Düşürme)",
+            "title": "Voltaj Düşürme (Undervolt)",
             "little": "Little Kümesi",
             "big": "Big Kümesi",
             "gpu": "GPU",
@@ -261,10 +261,10 @@
         "title": "Hakkında",
         "description": "FloppyKernel'i yapılandırmak için yardımcı modül.",
         "moduleLinks": "Modül bağlantıları",
-        "projectCredits": "Proje ekibi",
+        "projectCredits": "PROJE EKİBİ",
         "roleFlopster": "Modül ve FloppyKernel geliştiricisi",
         "kernelLinksTemplate": "{name} bağlantıları",
-        "translationCredits": "Çeviri ekibi",
+        "translationCredits": "ÇEVİRİ EKİBİ",
         "repository": "Depo",
         "telegram": "Telegram kanalı",
         "variantStandard": "Standart",
