@@ -446,6 +446,24 @@ async function init() {
     const featuresSupported = detectedKnownPlatform && devInfo.featuresSupported !== false;
     window.setFeaturesSupported(featuresSupported);
 
+    // Seed superfloppy mode from /proc/cmdline BEFORE platform tweaks init,
+    // so the GPU unlock toggle has the correct state on first render
+    // (instead of waiting for the full Features unpack).
+    try {
+        const cmdline = await exec('cat /proc/cmdline');
+        if (cmdline) {
+            const sfMatch = cmdline.match(/superfloppy=(\d+)/);
+            if (sfMatch) {
+                window.currentSuperfloppyMode = sfMatch[1];
+                document.dispatchEvent(new CustomEvent('superfloppyModeChanged', {
+                    detail: { mode: sfMatch[1], source: 'cmdline' }
+                }));
+            }
+        }
+    } catch {
+        // ignore — features.js will set it later during full unpack
+    }
+
     // Initialize Platform Tweaks now that KERNEL_NAME is set
     if (window.initPlatformTweaks) {
         const maybePromise = window.initPlatformTweaks();
