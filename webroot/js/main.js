@@ -379,6 +379,7 @@ async function init() {
 
     const props = await getModuleProps();
     const devInfo = await resolveDeviceInfo();
+    window.deviceInfo = devInfo; // Expose globally for other modules (e.g. monitor.js)
 
     // Populate About Page (from module.prop, except description which is i18n)
     const aboutTitle = document.getElementById('about-title');
